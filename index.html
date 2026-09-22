@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="es" style=""><head><meta charset="utf-8"><script>window.__sensaLog=[];window.addEventListener('error',function(e){window.__sensaLog.push('ERROR: '+e.message+' @ '+e.filename+':'+e.lineno);});</script><meta content="width=device-width, initial-scale=1.0" name="viewport"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}
+<!DOCTYPE html><html lang="es" style=""><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><style>@layer base{html,body{margin:0;padding:0;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}
 html,body{overflow-x:hidden;}
 @keyframes float-1 { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
 @keyframes float-2 { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
@@ -69,11 +69,13 @@ html,body{overflow-x:hidden;}
   display: block;
 }
 #sensa-mascot .mascot-inner.breathe {
-  animation: mascot-breathe 3s ease-in-out infinite;
+  animation: mascot-breathe 2.4s ease-in-out infinite;
 }
 @keyframes mascot-breathe {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.02); }
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  25% { transform: scale(1.05, 0.95) rotate(-6deg); }
+  50% { transform: scale(1.06) rotate(0deg); }
+  75% { transform: scale(1.05, 0.95) rotate(6deg); }
 }
 #sensa-mascot.landed {
   position: absolute;
@@ -343,7 +345,6 @@ html,body{overflow-x:hidden;}
 </section>
 </div></main><footer class="bg-surface-container-low py-section-gap mt-section-gap"><div class="max-w-7xl mx-auto px-container-padding-mobile lg:px-container-padding-desktop"><div class="flex flex-col items-center text-center gap-6 mb-12"><div class="flex items-center gap-3"><img alt="Sensa Logo" class="h-10 w-auto" src="images/logo-sensa.png"><span class="font-headline-md text-headline-md text-primary">SENSA</span></div><p class="font-body-md text-body-md text-on-surface-variant max-w-sm">Accesorios sensoriales para acompañarte en esos pequeños momentos de pausa durante tu día.</p><p class="font-headline-md text-[16px] text-primary">Menos estrés, más momentos SENSA.</p><a href="https://www.instagram.com/sensa.usm" target="_blank" class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors">Instagram: @sensa.usm</a></div><div class="pt-8 border-t border-outline-variant text-center text-on-surface-variant font-label-sm text-label-sm"><p>© 2026 SENSA. Todos los derechos reservados.</p></div></div></footer>
 <script>
-window.__sensaLog.push('reveal-script:start');
 (function () {
   // Se observan las SECCIONES (.reveal-trigger), que nunca cambian de tamaño ni posición,
   // y no las tarjetas animadas dentro de ellas. Así se evita que el propio movimiento de
@@ -360,23 +361,25 @@ window.__sensaLog.push('reveal-script:start');
     });
   }, { threshold: 0.15 });
   sections.forEach(function (el) { observer.observe(el); });
-  window.__sensaLog.push('reveal-script:end-ok');
 })();
 </script>
 <script>
-window.__sensaLog.push('mascot-script:start');
 (function () {
   // Easter egg: el Dumpling "rueda" desde el Hero hasta la sección de productos
   // mientras el usuario baja, y se queda "posado" junto al título al llegar.
   // Desactivado en móvil y si el usuario prefiere menos animaciones.
-  if (window.matchMedia('(max-width: 767px)').matches) { window.__sensaLog.push('mascot:exit-mobile,w='+window.innerWidth); return; }
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { window.__sensaLog.push('mascot:exit-reduced-motion'); return; }
+  // Se inicializa recién en window 'load': justo después de imprimir el <head>,
+  // window.innerWidth puede leerse como 0 por una fracción de segundo en algunos
+  // navegadores, y eso activaba por error el bloqueo de "modo móvil" de forma
+  // permanente (el dumpling nunca llegaba a crearse ni a moverse).
+  function init() {
+  if (window.matchMedia('(max-width: 767px)').matches) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
   var hero = document.getElementById('inicio');
   var productos = document.getElementById('productos');
   var dock = document.getElementById('dumpling-dock');
-  if (!hero || !productos || !dock) { window.__sensaLog.push('mascot:exit-missing-el,hero='+!!hero+',productos='+!!productos+',dock='+!!dock); return; }
-  window.__sensaLog.push('mascot:guards-passed');
+  if (!hero || !productos || !dock) return;
 
   var mascot = document.createElement('div');
   mascot.id = 'sensa-mascot';
@@ -483,10 +486,11 @@ window.__sensaLog.push('mascot-script:start');
     computeRange();
     if (state === 'idle') idlePosition();
   });
-  window.__sensaLog.push('mascot-script:end-ok, created=' + !!document.getElementById('sensa-mascot'));
+  }
+
+  if (document.readyState === 'complete') init();
+  else window.addEventListener('load', init);
 })();
 </script>
-<script>window.__sensaLog.push('after-mascot-script-tag');</script>
-
 
 </body></html>
