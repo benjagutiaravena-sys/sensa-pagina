@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="es" style=""><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}
+<!DOCTYPE html><html lang="es" style=""><head><meta charset="utf-8"><script>window.__sensaLog=[];window.addEventListener('error',function(e){window.__sensaLog.push('ERROR: '+e.message+' @ '+e.filename+':'+e.lineno);});</script><meta content="width=device-width, initial-scale=1.0" name="viewport"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}
 html,body{overflow-x:hidden;}
 @keyframes float-1 { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
 @keyframes float-2 { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
@@ -343,6 +343,7 @@ html,body{overflow-x:hidden;}
 </section>
 </div></main><footer class="bg-surface-container-low py-section-gap mt-section-gap"><div class="max-w-7xl mx-auto px-container-padding-mobile lg:px-container-padding-desktop"><div class="flex flex-col items-center text-center gap-6 mb-12"><div class="flex items-center gap-3"><img alt="Sensa Logo" class="h-10 w-auto" src="images/logo-sensa.png"><span class="font-headline-md text-headline-md text-primary">SENSA</span></div><p class="font-body-md text-body-md text-on-surface-variant max-w-sm">Accesorios sensoriales para acompañarte en esos pequeños momentos de pausa durante tu día.</p><p class="font-headline-md text-[16px] text-primary">Menos estrés, más momentos SENSA.</p><a href="https://www.instagram.com/sensa.usm" target="_blank" class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors">Instagram: @sensa.usm</a></div><div class="pt-8 border-t border-outline-variant text-center text-on-surface-variant font-label-sm text-label-sm"><p>© 2026 SENSA. Todos los derechos reservados.</p></div></div></footer>
 <script>
+window.__sensaLog.push('reveal-script:start');
 (function () {
   // Se observan las SECCIONES (.reveal-trigger), que nunca cambian de tamaño ni posición,
   // y no las tarjetas animadas dentro de ellas. Así se evita que el propio movimiento de
@@ -359,9 +360,11 @@ html,body{overflow-x:hidden;}
     });
   }, { threshold: 0.15 });
   sections.forEach(function (el) { observer.observe(el); });
+  window.__sensaLog.push('reveal-script:end-ok');
 })();
 </script>
 <script>
+window.__sensaLog.push('mascot-script:start');
 (function () {
   // Easter egg: el Dumpling "rueda" desde el Hero hasta la sección de productos
   // mientras el usuario baja, y se queda "posado" junto al título al llegar.
@@ -479,8 +482,10 @@ html,body{overflow-x:hidden;}
     computeRange();
     if (state === 'idle') idlePosition();
   });
+  window.__sensaLog.push('mascot-script:end-ok, created=' + !!document.getElementById('sensa-mascot'));
 })();
 </script>
+<script>window.__sensaLog.push('after-mascot-script-tag');</script>
 
 
 </body></html>
