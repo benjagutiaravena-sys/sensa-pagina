@@ -369,13 +369,14 @@ window.__sensaLog.push('mascot-script:start');
   // Easter egg: el Dumpling "rueda" desde el Hero hasta la sección de productos
   // mientras el usuario baja, y se queda "posado" junto al título al llegar.
   // Desactivado en móvil y si el usuario prefiere menos animaciones.
-  if (window.matchMedia('(max-width: 767px)').matches) return;
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (window.matchMedia('(max-width: 767px)').matches) { window.__sensaLog.push('mascot:exit-mobile,w='+window.innerWidth); return; }
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { window.__sensaLog.push('mascot:exit-reduced-motion'); return; }
 
   var hero = document.getElementById('inicio');
   var productos = document.getElementById('productos');
   var dock = document.getElementById('dumpling-dock');
-  if (!hero || !productos || !dock) return;
+  if (!hero || !productos || !dock) { window.__sensaLog.push('mascot:exit-missing-el,hero='+!!hero+',productos='+!!productos+',dock='+!!dock); return; }
+  window.__sensaLog.push('mascot:guards-passed');
 
   var mascot = document.createElement('div');
   mascot.id = 'sensa-mascot';
