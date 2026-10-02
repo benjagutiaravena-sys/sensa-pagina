@@ -1,0 +1,111 @@
+/* SENSA · estilos propios (los tokens de color/tipografía viven en tailwind-config.js) */
+:root {
+  --c-surface: #fdf8ff;
+  --c-graphite: #2A2833;
+  --c-lavender: #B9A7E8;
+  --c-butter: #F6DC8C;
+  --c-mint: #A8DDB5;
+  --c-tray: #f1ebfb;
+  --ease-squish: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-soft: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html { scroll-behavior: smooth; scroll-padding-top: 5rem; overflow-x: hidden; background: var(--c-surface); }
+body { margin: 0; overflow-x: hidden; }
+/* Importante: NO usar overscroll-behavior en html/body (bloqueaba el scroll con la rueda). */
+::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); }
+html.no-scroll, html.no-scroll body { overflow: hidden; }
+
+.material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; user-select: none; }
+.material-symbols-outlined.icon-fill { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+
+:focus-visible { outline: 2px solid var(--c-lavender); outline-offset: 2px; border-radius: 9999px; }
+
+/* Micro-interacción: compresión táctil */
+.squish-btn { transition: transform 0.18s var(--ease-squish), background-color 0.2s, color 0.2s; }
+.squish-btn:active { transform: scale(0.88); }
+
+/* Tarjeta de producto */
+.sensory-card { transition: box-shadow 0.3s ease, transform 0.3s ease; }
+.sensory-card:hover { transform: translateY(-2px) scale(1.005); }
+.sensory-card:hover .tray-img { transform: scale(1.05); }
+.tray-img { transition: transform 0.35s ease; }
+.tray-img.blend { mix-blend-mode: multiply; }
+.fav-btn.fav-on { color: #ba1a1a; }
+.fav-btn.fav-on .material-symbols-outlined { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+
+/* Hero: tarjetas flotantes */
+@keyframes float-1 { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+@keyframes float-2 { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-16px); } }
+@keyframes float-3 { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-9px); } }
+@keyframes float-4 { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-18px); } }
+.animate-float-1 { animation: float-1 6s ease-in-out infinite; }
+.animate-float-2 { animation: float-2 7.5s ease-in-out infinite 1s; }
+.animate-float-3 { animation: float-3 5s ease-in-out infinite 2s; }
+.animate-float-4 { animation: float-4 8s ease-in-out infinite 0.5s; }
+
+/* Aparición al hacer scroll. Se observa la <section> (.reveal-trigger), que no se mueve,
+   y no las tarjetas animadas, para no generar bucles del observer. */
+.js .reveal-up { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease-out, transform 0.7s var(--ease-soft); }
+.js .reveal-trigger.is-visible .reveal-up { opacity: 1; transform: none; }
+.stagger-group > *:nth-child(1) { transition-delay: 0ms; }
+.stagger-group > *:nth-child(2) { transition-delay: 100ms; }
+.stagger-group > *:nth-child(3) { transition-delay: 200ms; }
+.stagger-group > *:nth-child(4) { transition-delay: 300ms; }
+
+/* Panel de pedido */
+.cart-root { position: fixed; inset: 0; z-index: 70; pointer-events: none; }
+.cart-root.open { pointer-events: auto; }
+.cart-scrim { position: absolute; inset: 0; background: rgba(28, 26, 37, 0.6); backdrop-filter: blur(2px); opacity: 0; transition: opacity 0.3s; }
+.cart-root.open .cart-scrim { opacity: 1; }
+.cart-panel {
+  position: absolute; top: 0; right: 0; bottom: 0; width: 94%; max-width: 420px;
+  display: flex; flex-direction: column; background: var(--c-surface); color: #1c1a25;
+  border-top-left-radius: 2rem; border-bottom-left-radius: 2rem; overflow: hidden;
+  box-shadow: 0 24px 48px -8px rgba(42,40,51,0.2), 0 8px 20px -4px rgba(185,167,232,0.25);
+  transform: translateX(104%); visibility: hidden;
+  transition: transform 0.4s var(--ease-soft), visibility 0s linear 0.4s;
+}
+.cart-root.open .cart-panel { transform: none; visibility: visible; transition: transform 0.4s var(--ease-soft); }
+
+/* Aviso (toast) */
+.toast {
+  position: fixed; left: 50%; z-index: 80; bottom: 6.5rem; transform: translate(-50%, 16px);
+  display: flex; align-items: center; gap: 0.5rem; max-width: calc(100vw - 2rem);
+  padding: 0.75rem 1.25rem; border-radius: 9999px; background: #312f3a; color: #f4eefe;
+  box-shadow: 0 24px 48px -8px rgba(42,40,51,0.3); opacity: 0; pointer-events: none;
+  transition: opacity 0.3s, transform 0.3s var(--ease-soft);
+}
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+@media (min-width: 1024px) { .toast { bottom: 2rem; } }
+body.no-bottom-nav .toast { bottom: 1.5rem; }
+
+/* Acordeones */
+.acc-panel { display: none; }
+.acc-open .acc-panel { display: block; }
+
+/* Mascota Dumpling (easter egg).
+   #sensa-mascot: posición + rotación (transform escrito por JS).
+   .mascot-inner: squash/stretch y "respiración" (otro elemento => no compiten por transform). */
+#sensa-mascot { position: fixed; top: 0; left: 0; width: 88px; height: 88px; z-index: 40; pointer-events: none; will-change: transform; }
+#sensa-mascot .mascot-inner { width: 100%; height: 100%; filter: drop-shadow(0 10px 16px rgba(101,85,144,0.3)); }
+#sensa-mascot .mascot-inner img { width: 100%; height: 100%; object-fit: contain; display: block; }
+#sensa-mascot .mascot-inner.breathe { animation: mascot-breathe 2.4s ease-in-out infinite; }
+@keyframes mascot-breathe {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  25% { transform: scale(1.05, 0.95) rotate(-6deg); }
+  50% { transform: scale(1.06) rotate(0deg); }
+  75% { transform: scale(1.05, 0.95) rotate(6deg); }
+}
+#sensa-mascot.landed { position: absolute; top: 50%; right: 100%; left: auto; margin-right: 12px; transform: translateY(-50%); }
+@media (max-width: 767px) { #sensa-mascot { display: none !important; } }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  #sensa-mascot { display: none !important; }
+  .animate-float-1, .animate-float-2, .animate-float-3, .animate-float-4, #sensa-mascot .mascot-inner.breathe { animation: none; }
+  .js .reveal-up { opacity: 1; transform: none; transition: none; }
+}

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Producto | SENSA</title>
+<meta name="description" content="Producto sensorial de SENSA. Pídelo por Instagram @sensa.usm.">
+<meta name="theme-color" content="#fdf8ff">
+<meta property="og:title" content="Producto | SENSA">
+<meta property="og:type" content="product">
+<link rel="icon" type="image/png" href="/images/favicon-128.png">
+<link rel="apple-touch-icon" href="/images/favicon-128.png">
+<script>document.documentElement.classList.add('js')</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@600;700&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block" rel="stylesheet">
+<link rel="stylesheet" href="/assets/styles.css">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="/assets/tailwind-config.js"></script>
+</head>
+<body class="no-bottom-nav bg-surface text-on-surface font-body-md text-body-md min-h-screen">
+
+<header class="fixed top-0 inset-x-0 z-50 bg-surface/85 backdrop-blur-xl shadow-rest">
+  <div class="h-16 max-w-[1280px] mx-auto px-margin-sm lg:px-margin-lg flex items-center justify-between gap-space-sm">
+    <div class="flex items-center gap-space-sm min-w-0">
+      <a href="/#productos" id="back-link" aria-label="Volver al catálogo" class="squish-btn w-10 h-10 shrink-0 rounded-full bg-surface-container-high hover:bg-surface-container-highest flex items-center justify-center">
+        <span class="material-symbols-outlined text-[22px]">arrow_back</span>
+      </a>
+      <div class="flex flex-col min-w-0">
+        <span class="font-headline-sm text-headline-sm text-on-surface tracking-tight leading-tight truncate">Detalle</span>
+        <span class="font-label-sm text-label-sm text-on-surface-variant">SENSA</span>
+      </div>
+    </div>
+    <div class="flex items-center gap-space-sm">
+      <button type="button" data-cart-open aria-label="Abrir pedido" class="squish-btn h-11 px-4 rounded-full bg-surface-container-high hover:bg-surface-container-highest flex items-center gap-2 shadow-[0_2px_6px_-1px_rgba(185,167,232,0.2)]">
+        <span class="material-symbols-outlined text-primary text-[20px]">shopping_bag</span>
+        <span class="hidden sm:inline font-label-md text-label-md text-on-surface font-bold">Pedido</span>
+        <span data-cart-count class="hidden min-w-5 h-5 px-1 rounded-full bg-primary-container text-on-primary-container font-label-sm text-label-sm items-center justify-center font-bold">0</span>
+      </button>
+      <a href="/" aria-label="SENSA, ir al inicio" class="p-1 rounded-full bg-surface-container-low"><img src="/images/opt/logo.webp" alt="" width="36" height="36" class="w-9 h-9 object-contain"></a>
+    </div>
+  </div>
+</header>
+
+<main class="pt-16 pb-space-xl">
+  <div id="product-root" class="max-w-[1280px] mx-auto px-margin-sm lg:px-margin-lg">
+    <p class="py-space-xl text-center text-on-surface-variant">Cargando producto…</p>
+  </div>
+</main>
+
+<footer class="bg-surface-container-high rounded-t-lg pt-space-lg pb-space-lg">
+  <div class="max-w-[1280px] mx-auto px-margin-sm lg:px-margin-lg flex flex-col items-center text-center gap-space-sm">
+    <p class="font-headline-sm text-headline-sm text-primary">Menos estrés, más momentos SENSA.</p>
+    <a href="https://www.instagram.com/sensa.usm" target="_blank" rel="noopener" class="font-label-lg text-label-lg text-on-surface-variant hover:text-primary transition-colors">Instagram: @sensa.usm</a>
+    <p class="w-full pt-space-sm mt-space-xs border-t border-outline-variant/60 font-label-sm text-label-sm text-on-surface-variant">© 2026 SENSA. Todos los derechos reservados.</p>
+  </div>
+</footer>
+
+<script src="/assets/products.js"></script>
+<script src="/assets/app.js"></script>
+<script src="/assets/product.js"></script>
+</body>
+</html>
