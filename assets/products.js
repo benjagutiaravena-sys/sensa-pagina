@@ -45,18 +45,22 @@
     duo('negro-verde',     'Negro y verde',      '#1F1F24', '#4DBE7A'),
     duo('verde-lima-negro','Verde lima y negro', '#8FE06F', '#1F1F24')
   ];
-  // Dumplings: los colores dependen de la versión (variants = en qué versiones existe).
-  var DUMPLING_COLORS = [
-    { id: 'glitter-dorado',   name: 'Dorado',   hex: '#B98A2E', variants: ['glitter'] },
-    { id: 'glitter-vino',     name: 'Vino',     hex: '#8C2A4B', variants: ['glitter'] },
-    { id: 'glitter-naranjo',  name: 'Naranjo',  hex: '#F28C28', variants: ['glitter'] },
-    { id: 'glitter-rosado',   name: 'Rosado',   hex: '#F2607F', variants: ['glitter'] },
-    { id: 'glitter-turquesa', name: 'Turquesa', hex: '#3AAFB9', variants: ['glitter'] },
-    { id: 'mate-rosado',      name: 'Rosado',   hex: '#F4A3C0', variants: ['mate'] },
-    { id: 'mate-amarillo',    name: 'Amarillo', hex: '#F7D84A', variants: ['mate'] },
-    { id: 'mate-celeste',     name: 'Celeste',  hex: '#7CCBF2', variants: ['mate'] },
-    { id: 'mate-blanco',      name: 'Blanco',   hex: '#FFFFFF', variants: ['mate'] }
-  ];
+  // Dumplings: una paleta por producto (Glitter y Mate se venden por separado).
+  var DUMPLING_COLORS = {
+    glitter: [
+      { id: 'glitter-dorado',   name: 'Dorado',   hex: '#B98A2E' },
+      { id: 'glitter-vino',     name: 'Vino',     hex: '#8C2A4B' },
+      { id: 'glitter-naranjo',  name: 'Naranjo',  hex: '#F28C28' },
+      { id: 'glitter-rosado',   name: 'Rosado',   hex: '#F2607F' },
+      { id: 'glitter-turquesa', name: 'Turquesa', hex: '#3AAFB9' }
+    ],
+    mate: [
+      { id: 'mate-rosado',   name: 'Rosado',   hex: '#F4A3C0' },
+      { id: 'mate-amarillo', name: 'Amarillo', hex: '#F7D84A' },
+      { id: 'mate-celeste',  name: 'Celeste',  hex: '#7CCBF2' },
+      { id: 'mate-blanco',   name: 'Blanco',   hex: '#FFFFFF' }
+    ]
+  };
 
   window.SENSA = {
     handle: '@sensa.usm',
@@ -167,30 +171,42 @@
         description: '6 lados con diferentes texturas y mecanismos sensoriales para mantener tus manos ocupadas y tu mente enfocada.'
       },
       {
-        slug: 'dumplings',
-        name: 'Dumplings',
+        slug: 'dumplings-glitter',
+        name: 'Dumplings Glitter',
         price: 3200,
         category: 'squishies',
-        kicker: 'Squishy suave y esponjoso',
-        badge: 'Kawaii',
+        kicker: 'Squishy con glitter',
+        badge: 'Glitter',
         badgeClass: 'bg-tertiary-fixed text-on-tertiary-fixed',
         image: '/images/opt/dumpling.webp',
-        alt: 'Dumpling squishy morado con carita kawaii, junto a su caja de bambú',
+        alt: 'Dumpling squishy morado con glitter y carita kawaii, junto a su caja de bambú',
         // Fotos secundarias (galería de la página de producto)
         moreImages: [
           { src: '/images/opt/dumplings-glitter.webp', alt: 'Cinco dumplings squishy con glitter en sus cajas de bambú: dorado, vino, naranjo, rosado y turquesa' },
-          { src: '/images/opt/dumplings-mate.webp', alt: 'Cuatro dumplings squishy mate en sus cajas de bambú: rosado, amarillo, celeste y blanco' },
           { src: '/images/opt/bao-squishy.webp', alt: 'Dos bao squishy rosados con carita kawaii: uno con glitter y otro mate' }
         ],
         blend: false,
         stock: 'En stock',
-        // photo = posición en la galería (0 = foto principal) que se muestra al elegir esa versión
-        variants: [
-          { id: 'glitter', name: 'Glitter', photo: 1 },
-          { id: 'mate', name: 'Mate', photo: 2 }
+        colors: DUMPLING_COLORS.glitter,
+        description: 'Adorable dumpling squishy con carita kawaii y glitter. Textura suave y esponjosa.'
+      },
+      {
+        slug: 'dumplings-mate',
+        name: 'Dumplings Mate',
+        price: 3200,
+        category: 'squishies',
+        kicker: 'Squishy mate',
+        badge: 'Mate',
+        badgeClass: 'bg-tertiary-fixed text-on-tertiary-fixed',
+        image: '/images/opt/dumplings-mate.webp',
+        alt: 'Cuatro dumplings squishy mate en sus cajas de bambú: rosado, amarillo, celeste y blanco',
+        moreImages: [
+          { src: '/images/opt/bao-squishy.webp', alt: 'Dos bao squishy rosados con carita kawaii: uno con glitter y otro mate' }
         ],
-        colors: DUMPLING_COLORS,
-        description: 'Adorable dumpling squishy con carita kawaii. Textura suave y esponjosa. Disponible en versión glitter y versión mate.'
+        blend: false,
+        stock: 'En stock',
+        colors: DUMPLING_COLORS.mate,
+        description: 'Adorable dumpling squishy mate con carita kawaii. Textura suave y esponjosa, sin brillo.'
       }
     ],
     steps: [
@@ -205,7 +221,8 @@
 
   // Links antiguos de productos que se fusionaron con otro.
   D.aliases = {
-    'bao-squishy': 'dumplings',
+    'dumplings': 'dumplings-glitter',
+    'bao-squishy': 'dumplings-glitter',
     'fidget-cube': 'cubo-antiestres-sensorial'
   };
 
