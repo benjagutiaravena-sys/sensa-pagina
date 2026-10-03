@@ -182,8 +182,7 @@
         alt: 'Dumpling squishy morado con glitter y carita kawaii, junto a su caja de bambú',
         // Fotos secundarias (galería de la página de producto)
         moreImages: [
-          { src: '/images/opt/dumplings-glitter.webp', alt: 'Cinco dumplings squishy con glitter en sus cajas de bambú: dorado, vino, naranjo, rosado y turquesa' },
-          { src: '/images/opt/bao-squishy.webp', alt: 'Dos bao squishy rosados con carita kawaii: uno con glitter y otro mate' }
+          { src: '/images/opt/dumplings-glitter.webp', alt: 'Cinco dumplings squishy con glitter en sus cajas de bambú: dorado, vino, naranjo, rosado y turquesa' }
         ],
         blend: false,
         stock: 'En stock',
@@ -200,9 +199,6 @@
         badgeClass: 'bg-tertiary-fixed text-on-tertiary-fixed',
         image: '/images/opt/dumplings-mate.webp',
         alt: 'Cuatro dumplings squishy mate en sus cajas de bambú: rosado, amarillo, celeste y blanco',
-        moreImages: [
-          { src: '/images/opt/bao-squishy.webp', alt: 'Dos bao squishy rosados con carita kawaii: uno con glitter y otro mate' }
-        ],
         blend: false,
         stock: 'En stock',
         colors: DUMPLING_COLORS.mate,

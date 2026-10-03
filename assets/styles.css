@@ -38,6 +38,9 @@ html.no-scroll, html.no-scroll body { overflow: hidden; }
 .fav-btn.fav-on .material-symbols-outlined { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
 
 /* Hero: tarjetas flotantes */
+/* Rotación de productos en la portada: la tarjeta se desvanece, cambia de producto y reaparece */
+[data-hero-tile] > span { transition: opacity 0.7s ease, transform 0.7s var(--ease-squish, ease); }
+[data-hero-tile].is-swapping > span { opacity: 0; transform: scale(0.9); }
 @keyframes float-1 { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
 @keyframes float-2 { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-16px); } }
 @keyframes float-3 { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-9px); } }

@@ -94,6 +94,55 @@
   }
   setActive('inicio');
 
+  /* ---------- Portada: rotación de productos ----------
+     Las 4 tarjetas van cambiando de producto (desvanecen y reaparecen), escalonadas, sin repetir
+     un producto que ya se ve. Con "reducir movimiento" se queda la selección inicial. */
+  (function heroRotation() {
+    var tiles = Array.prototype.slice.call(document.querySelectorAll('[data-hero-tile]'));
+    if (!tiles.length || D.products.length <= tiles.length) return;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    var shown = tiles.map(function (a) { return a.getAttribute('href').replace('/producto/', ''); });
+    var order = D.products.map(function (p) { return p.slug; });
+    // Precarga para que el cambio no parpadee.
+    D.products.forEach(function (p) { var im = new Image(); im.src = p.image; });
+
+    function nextFor(i) {
+      // El siguiente producto de la lista que no esté visible en otra tarjeta.
+      var idx = order.indexOf(shown[i]);
+      for (var k = 1; k <= order.length; k++) {
+        var slug = order[(idx + k) % order.length];
+        if (shown.indexOf(slug) === -1) return D.find(slug);
+      }
+      return null;
+    }
+
+    function swap(i) {
+      if (document.hidden) return;
+      var a = tiles[i], p = nextFor(i);
+      if (!p) return;
+      a.classList.add('is-swapping');
+      setTimeout(function () {
+        var img = a.querySelector('img');
+        img.src = p.image;
+        img.alt = p.name;
+        a.href = '/producto/' + p.slug;
+        a.setAttribute('aria-label', 'Ver ' + p.name);
+        shown[i] = p.slug;
+        // Breve pausa para que el producto nuevo cargue (ya oculto) antes de reaparecer.
+        setTimeout(function () { a.classList.remove('is-swapping'); }, 120);
+      }, 800);
+    }
+
+    // Cada tarjeta cambia cada ~7 s, desfasada de las demás.
+    tiles.forEach(function (a, i) {
+      setTimeout(function () {
+        swap(i);
+        setInterval(function () { swap(i); }, 7000);
+      }, 2500 + i * 1750);
+    });
+  })();
+
   /* ---------- Mascota Dumpling (easter egg) ----------
      Rueda desde el Hero hasta el título del catálogo mientras se baja y se queda posada ahí.
      Se desactiva en móvil y con "reducir movimiento". Solo lee window.scrollY y escribe transform. */
