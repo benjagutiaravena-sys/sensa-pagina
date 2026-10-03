@@ -9,8 +9,17 @@
   /* ---------- Catálogo ---------- */
   function visibleProducts() {
     var list = D.products.filter(function (p) { return state.category === 'all' || p.category === state.category; });
-    if (state.sort === 'asc') list = list.slice().sort(function (a, b) { return a.price - b.price; });
-    if (state.sort === 'desc') list = list.slice().sort(function (a, b) { return b.price - a.price; });
+    // Los productos sin precio ("Consultar precio") quedan siempre al final.
+    var priced = function (p) { return p.price == null ? Infinity : p.price; };
+    var byAsc = function (a, b) {
+      if (priced(a) === Infinity || priced(b) === Infinity) return priced(a) === priced(b) ? 0 : (priced(a) === Infinity ? 1 : -1);
+      return a.price - b.price;
+    };
+    if (state.sort === 'asc') list = list.slice().sort(byAsc);
+    if (state.sort === 'desc') list = list.slice().sort(function (a, b) {
+      if (priced(a) === Infinity || priced(b) === Infinity) return byAsc(a, b);
+      return b.price - a.price;
+    });
     return list;
   }
 
@@ -20,7 +29,7 @@
     grid.className = 'stagger-group grid gap-3 pt-space-xs pb-space-lg ' +
       (state.list ? 'grid-cols-1 sm:grid-cols-2' : 'grid-cols-2 lg:grid-cols-4');
     var n = list.length;
-    document.getElementById('count-pill').textContent = n + (n === 1 ? ' disponible' : ' disponibles');
+    document.getElementById('count-pill').textContent = n + (n === 1 ? ' producto' : ' productos');
     document.getElementById('empty-note').classList.toggle('hidden', n !== 0);
     window.Sensa.applyFavs(grid);
   }

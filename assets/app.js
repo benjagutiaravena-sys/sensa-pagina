@@ -21,13 +21,29 @@
   }
 
   /* ---------- Estado del pedido ---------- */
+  // Cada línea = producto + (versión) + (color) + cantidad. La clave identifica la combinación.
+  function keyOf(slug, o) {
+    o = o || {};
+    return [slug, o.variant || '', o.color || ''].join('|');
+  }
+  // Una línea es válida si las opciones que exige el producto están elegidas.
+  function validOptions(p, o) {
+    o = o || {};
+    if (D.hasColors(p) && !D.color(p, o.color)) return false;
+    if (D.hasVariants(p) && !D.variant(p, o.variant)) return false;
+    return true;
+  }
   var items = (function () {
     var saved = readJSON(CART_KEY, []);
     if (!Array.isArray(saved)) return [];
     return saved.filter(function (it) {
-      return it && D.find(it.slug) && it.qty > 0;
+      var p = it && D.find(it.slug);
+      return p && p.price != null && it.qty > 0 && validOptions(p, it);
     }).map(function (it) {
-      return { slug: it.slug, qty: Math.min(MAX_QTY, Math.floor(it.qty)) };
+      var line = { slug: it.slug, qty: Math.min(MAX_QTY, Math.floor(it.qty)) };
+      if (it.variant) line.variant = it.variant;
+      if (it.color) line.color = it.color;
+      return line;
     });
   })();
   var listeners = [];
@@ -36,8 +52,8 @@
     writeJSON(CART_KEY, items);
     listeners.forEach(function (fn) { fn(); });
   }
-  function indexOf(slug) {
-    for (var i = 0; i < items.length; i++) if (items[i].slug === slug) return i;
+  function indexOf(key) {
+    for (var i = 0; i < items.length; i++) if (keyOf(items[i].slug, items[i]) === key) return i;
     return -1;
   }
 
@@ -47,23 +63,33 @@
     total: function () {
       return items.reduce(function (sum, it) { return sum + D.find(it.slug).price * it.qty; }, 0);
     },
-    add: function (slug, qty) {
-      if (!D.find(slug)) return;
-      var i = indexOf(slug);
+    // opts = { variant, color }. Devuelve false si falta una opción obligatoria o no hay precio.
+    add: function (slug, qty, opts) {
+      var p = D.find(slug);
+      opts = opts || {};
+      if (!p || p.price == null || !validOptions(p, opts)) return false;
+      var i = indexOf(keyOf(slug, opts));
       var add = Math.max(1, qty || 1);
-      if (i === -1) items.push({ slug: slug, qty: Math.min(MAX_QTY, add) });
-      else items[i].qty = Math.min(MAX_QTY, items[i].qty + add);
+      if (i === -1) {
+        var line = { slug: slug, qty: Math.min(MAX_QTY, add) };
+        if (opts.variant) line.variant = opts.variant;
+        if (opts.color) line.color = opts.color;
+        items.push(line);
+      } else {
+        items[i].qty = Math.min(MAX_QTY, items[i].qty + add);
+      }
       commit();
+      return true;
     },
-    setQty: function (slug, qty) {
-      var i = indexOf(slug);
+    setQty: function (key, qty) {
+      var i = indexOf(key);
       if (i === -1) return;
       if (qty <= 0) items.splice(i, 1);
       else items[i].qty = Math.min(MAX_QTY, qty);
       commit();
     },
-    remove: function (slug) {
-      var i = indexOf(slug);
+    remove: function (key) {
+      var i = indexOf(key);
       if (i !== -1) { items.splice(i, 1); commit(); }
     },
     clear: function () { items = []; commit(); },
@@ -72,7 +98,8 @@
       var lines = ['Hola SENSA! Quiero hacer este pedido:'];
       items.forEach(function (it) {
         var p = D.find(it.slug);
-        lines.push('• ' + it.qty + 'x ' + p.name + ' (' + p.colorLabel.toLowerCase() + ') - ' + D.money(p.price * it.qty));
+        var label = D.optionLabel(p, it);
+        lines.push('• ' + it.qty + 'x ' + p.name + (label ? ' (' + label + ')' : '') + ' - ' + D.money(p.price * it.qty));
       });
       lines.push('Total: ' + D.money(Cart.total()));
       lines.push('Quedo atento/a para coordinar el pago y la entrega.');
@@ -215,7 +242,7 @@
     list.innerHTML = items.map(function (it) {
       var p = D.find(it.slug);
       return '' +
-        '<div class="p-3 rounded-lg bg-surface-container-lowest shadow-soft flex items-center gap-3" data-slug="' + p.slug + '">' +
+        '<div class="p-3 rounded-lg bg-surface-container-lowest shadow-soft flex items-center gap-3" data-key="' + esc(keyOf(it.slug, it)) + '">' +
           '<a href="/producto/' + p.slug + '" class="w-20 h-20 rounded-DEFAULT bg-surface-container shrink-0 overflow-hidden flex items-center justify-center p-1">' +
             '<img src="' + p.image + '" alt="' + esc(p.alt) + '" class="w-full h-full object-contain' + (p.blend ? ' tray-img blend' : '') + '" loading="lazy">' +
           '</a>' +
@@ -224,7 +251,7 @@
               '<a href="/producto/' + p.slug + '" class="font-headline-sm text-[16px] text-on-surface leading-snug truncate">' + esc(p.name) + '</a>' +
               '<span class="font-headline-sm text-[15px] text-on-surface font-bold shrink-0">' + D.money(p.price * it.qty) + '</span>' +
             '</div>' +
-            '<span class="font-body-sm text-body-sm text-on-surface-variant truncate mb-2">' + esc(p.colorLabel) + '</span>' +
+            '<span class="font-body-sm text-body-sm text-on-surface-variant truncate mb-2">' + esc(D.optionLabel(p, it)) + '</span>' +
             '<div class="flex items-center justify-between">' +
               '<div class="inline-flex items-center bg-surface-container-high rounded-full p-0.5 shadow-inner">' +
                 '<button type="button" data-act="dec" aria-label="Disminuir cantidad" class="squish-btn w-6 h-6 rounded-full bg-surface-container-lowest text-on-surface flex items-center justify-center"><span class="material-symbols-outlined text-[14px]">remove</span></button>' +
@@ -254,13 +281,16 @@
     if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
   }
 
-  function send() {
-    if (!items.length) return;
-    var text = Cart.message();
+  // Copia el texto y abre Instagram (@sensa.usm) para pegarlo en el chat.
+  function sendToInstagram(text, okMsg) {
     var p = copyText(text);
     window.open(D.instagram, '_blank', 'noopener');
-    p.then(function () { toast('¡Pedido copiado! Pégalo en el chat de ' + D.handle); })
+    p.then(function () { toast(okMsg || ('¡Mensaje copiado! Pégalo en el chat de ' + D.handle)); })
      .catch(function () { toast('No se pudo copiar. Escríbenos en ' + D.handle); });
+  }
+  function send() {
+    if (!items.length) return;
+    sendToInstagram(Cart.message(), '¡Pedido copiado! Pégalo en el chat de ' + D.handle);
   }
 
   function init() {
@@ -274,9 +304,7 @@
       if (t.hasAttribute('data-cart-open')) { e.preventDefault(); open(); return; }
       if (t.hasAttribute('data-cart-close')) { close(); return; }
       if (t.hasAttribute('data-add')) {
-        var slug = t.getAttribute('data-add');
-        Cart.add(slug, 1);
-        toast('¡Agregado al pedido con calma!');
+        if (Cart.add(t.getAttribute('data-add'), 1)) toast('¡Agregado al pedido con calma!');
         return;
       }
       if (t.hasAttribute('data-fav')) {
@@ -287,14 +315,14 @@
         return;
       }
       var act = t.getAttribute('data-act');
-      var row = t.closest('[data-slug]');
+      var row = t.closest('[data-key]');
       if (row) {
-        var s = row.getAttribute('data-slug');
-        var cur = items[indexOf(s)];
+        var k = row.getAttribute('data-key');
+        var cur = items[indexOf(k)];
         if (!cur) return;
-        if (act === 'inc') Cart.setQty(s, cur.qty + 1);
-        else if (act === 'dec') Cart.setQty(s, cur.qty - 1);
-        else if (act === 'rm') Cart.remove(s);
+        if (act === 'inc') Cart.setQty(k, cur.qty + 1);
+        else if (act === 'dec') Cart.setQty(k, cur.qty - 1);
+        else if (act === 'rm') Cart.remove(k);
       }
     });
 
@@ -318,13 +346,21 @@
 
   /* ---------- Plantillas compartidas ---------- */
   function dotsHTML(p, size) {
-    return '<div class="flex -space-x-1 shrink-0">' + p.dots.map(function (c) {
-      return '<span class="' + size + ' rounded-full shadow-sm border border-white/60" style="background:' + c + '"></span>';
+    var dots = D.cardDots(p);
+    if (!dots.length) return '';
+    return '<div class="flex -space-x-1 shrink-0">' + dots.map(function (c) {
+      return '<span class="' + size + ' rounded-full shadow-sm border border-white/70" style="background:' + c + '"></span>';
     }).join('') + '</div>';
+  }
+  function priceHTML(p, big) {
+    if (p.price == null) {
+      return '<span class="font-headline-sm text-[15px] leading-snug text-primary font-bold ' + (big ? 'mt-1' : '') + '">Consultar precio</span>';
+    }
+    return '<span class="font-headline-sm text-headline-sm text-on-surface font-bold ' + (big ? 'mt-1' : '') + '">' + D.money(p.price) + '</span>';
   }
 
   function cardHTML(p) {
-    var short = p.colorLabel.split(',')[0];
+    var note = D.cardNote(p);
     return '' +
       '<div class="reveal-up h-full" data-category="' + p.category + '" data-price="' + p.price + '">' +
         '<article class="sensory-card h-full flex flex-col justify-between p-2.5 rounded-lg bg-surface-container-lowest shadow-rest hover:shadow-raised">' +
@@ -341,15 +377,19 @@
             '<div class="flex flex-col mt-2.5 px-0.5">' +
               '<span class="font-label-sm text-label-sm text-on-surface-variant line-clamp-1">' + esc(p.kicker) + '</span>' +
               '<h3 class="mt-0.5"><a href="/producto/' + p.slug + '" class="font-title-md text-title-md text-on-surface tracking-tight line-clamp-2">' + esc(p.name) + '</a></h3>' +
-              '<span class="font-headline-sm text-headline-sm text-on-surface font-bold mt-1">' + D.money(p.price) + '</span>' +
+              priceHTML(p, true) +
             '</div>' +
           '</div>' +
           '<div class="mt-3 pt-2 flex items-center justify-between gap-2 px-0.5">' +
             '<div class="flex items-center gap-1.5 min-w-0">' + dotsHTML(p, 'w-2.5 h-2.5') +
-              '<span class="font-label-sm text-on-surface-variant text-[10px] leading-tight">' + esc(short) + '</span></div>' +
-            '<button type="button" data-add="' + p.slug + '" aria-label="Añadir ' + esc(p.name) + ' al pedido" class="squish-btn w-8 h-8 shrink-0 rounded-full bg-graphite text-inverse-on-surface flex items-center justify-center hover:bg-primary shadow-sm">' +
-              '<span class="material-symbols-outlined text-[16px]">add</span>' +
-            '</button>' +
+              '<span class="font-label-sm text-on-surface-variant text-[10px] leading-tight">' + esc(note) + '</span></div>' +
+            (D.canQuickAdd(p)
+              ? '<button type="button" data-add="' + p.slug + '" aria-label="Añadir ' + esc(p.name) + ' al pedido" class="squish-btn w-8 h-8 shrink-0 rounded-full bg-graphite text-inverse-on-surface flex items-center justify-center hover:bg-primary shadow-sm">' +
+                  '<span class="material-symbols-outlined text-[16px]">add</span>' +
+                '</button>'
+              : '<a href="/producto/' + p.slug + '" aria-label="' + (D.needsOptions(p) ? 'Elegir opciones de ' : 'Ver ') + esc(p.name) + '" class="squish-btn w-8 h-8 shrink-0 rounded-full bg-graphite text-inverse-on-surface flex items-center justify-center hover:bg-primary shadow-sm">' +
+                  '<span class="material-symbols-outlined text-[16px]">arrow_forward</span>' +
+                '</a>') +
           '</div>' +
         '</article>' +
       '</div>';
@@ -365,14 +405,14 @@
         '<span class="font-label-sm text-label-sm text-on-surface-variant uppercase font-semibold line-clamp-1">' + esc(p.kicker) + '</span>' +
         '<h4 class="font-title-md text-title-md text-on-surface font-bold mt-0.5 line-clamp-2">' + esc(p.name) + '</h4>' +
         '<div class="flex items-center justify-between mt-2">' +
-          '<span class="font-headline-sm text-headline-sm font-bold text-on-surface">' + D.money(p.price) + '</span>' +
-          '<span class="w-8 h-8 rounded-full bg-surface-container-high text-on-surface flex items-center justify-center group-hover:bg-primary group-hover:text-on-primary transition-colors"><span class="material-symbols-outlined text-[18px]">add</span></span>' +
+          priceHTML(p, false) +
+          '<span class="w-8 h-8 shrink-0 rounded-full bg-surface-container-high text-on-surface flex items-center justify-center group-hover:bg-primary group-hover:text-on-primary transition-colors"><span class="material-symbols-outlined text-[18px]">arrow_forward</span></span>' +
         '</div>' +
       '</a>';
   }
 
   window.Sensa = {
-    Cart: Cart, Favs: Favs, toast: toast, copyText: copyText, esc: esc,
+    Cart: Cart, Favs: Favs, toast: toast, copyText: copyText, esc: esc, sendToInstagram: sendToInstagram,
     cardHTML: cardHTML, relatedHTML: relatedHTML,
     applyFavs: function (scope) {
       (scope || document).querySelectorAll('[data-fav]').forEach(function (b) {
