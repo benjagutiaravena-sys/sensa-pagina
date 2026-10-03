@@ -244,7 +244,7 @@
   D.hasVariants = function (p) { return !!(p.variants && p.variants.length); };
   D.needsOptions = function (p) { return D.hasColors(p) || D.hasVariants(p); };
   // Se puede agregar directo al pedido (con precio y sin opciones por elegir).
-  D.canQuickAdd = function (p) { return p.price != null && !D.needsOptions(p); };
+  D.canQuickAdd = function (p) { return p.price != null && !D.needsOptions(p) && !(D.isSoldOut && D.isSoldOut(p)); };
   D.color = function (p, id) {
     return (p.colors || []).find(function (c) { return c.id === id; });
   };

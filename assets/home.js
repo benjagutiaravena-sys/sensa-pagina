@@ -34,6 +34,9 @@
     window.Sensa.applyFavs(grid);
   }
 
+  // Cuando llega (o cambia) el stock se repinta el catálogo con los "Agotado".
+  document.addEventListener('sensa:stock', renderGrid);
+
   document.querySelectorAll('[data-cat]').forEach(function (btn) {
     btn.addEventListener('click', function () {
       state.category = btn.getAttribute('data-cat');

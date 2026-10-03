@@ -102,7 +102,7 @@
   var colorHTML = D.hasColors(p) ?
     '<section id="sel-color" class="flex flex-col gap-space-xs rounded-lg" aria-label="Color">' +
       '<div class="flex items-center justify-between font-label-lg text-label-lg">' +
-        '<span class="text-on-surface">Color: <strong id="color-label" class="text-primary font-bold">Elige un color</strong></span>' +
+        '<span class="text-on-surface">Color: <strong id="color-label" class="text-primary font-bold">Elige un color</strong><span id="color-status" class="ml-2 font-label-md text-label-md font-bold"></span></span>' +
         '<span id="color-count" class="font-label-sm text-label-sm text-on-surface-variant"></span>' +
       '</div>' +
       '<div id="swatch-row" role="radiogroup" aria-label="Colores" class="swatch-row pt-5 pb-1"></div>' +
@@ -182,7 +182,7 @@
         '<section class="flex flex-col gap-space-xs">' +
           '<div class="flex items-center justify-between gap-3">' +
             '<span class="font-label-sm text-label-sm tracking-wider uppercase text-on-surface-variant font-bold">' + S.esc(p.kicker) + '</span>' +
-            '<span class="flex items-center gap-1.5 bg-surface-container-high px-2.5 py-0.5 rounded-full font-label-sm text-label-sm font-bold text-on-surface"><span class="w-2 h-2 rounded-full ' + (inStock ? 'bg-tertiary' : 'bg-secondary') + '"></span>' + S.esc(p.stock) + '</span>' +
+            '<span id="stock-pill" class="flex items-center gap-1.5 bg-surface-container-high px-2.5 py-0.5 rounded-full font-label-sm text-label-sm font-bold text-on-surface"><span id="stock-dot" class="w-2 h-2 rounded-full ' + (inStock ? 'bg-tertiary' : 'bg-secondary') + '"></span><span id="stock-text">' + S.esc(p.stock) + '</span></span>' +
           '</div>' +
           '<h1 class="font-display-lg-mobile text-display-lg-mobile lg:font-display-lg lg:text-display-lg text-on-surface tracking-tight mt-0.5">' + S.esc(p.name) + '</h1>' +
           '<div class="flex items-center gap-3 flex-wrap my-1">' +
@@ -277,7 +277,9 @@
     swatchRow.className = 'swatch-row pt-5 pb-1';
     swatchRow.innerHTML = list.map(function (c) {
       var on = c.id === state.color;
-      return '<button type="button" role="radio" aria-checked="' + on + '" aria-label="' + S.esc(c.name) + '" data-color="' + c.id + '" data-name="' + S.esc(c.name) + '" class="swatch"><span style="background:' + D.swatchBg(c) + '"></span></button>';
+      var st = D.stockState(p, c.id), tag = D.stockLabel(st);
+      var full = c.name + (tag ? ' · ' + tag : '');
+      return '<button type="button" role="radio" aria-checked="' + on + '" aria-label="' + S.esc(full) + '" data-color="' + c.id + '" data-name="' + S.esc(full) + '" class="swatch' + (st === 'out' ? ' is-out' : st === 'low' ? ' is-low' : '') + '"><span style="background:' + D.swatchBg(c) + '"></span></button>';
     }).join('');
   }
   function setColorLabel() {
@@ -298,6 +300,7 @@
       setColorLabel();
       // Muestra la foto de esa versión si la hay.
       if (multi && v.photo != null && v.photo < gallery.length) show(v.photo);
+      updateBuy();
     });
   });
   if (swatchRow) swatchRow.addEventListener('click', function (e) {
@@ -309,6 +312,7 @@
     setColorLabel();
     // Foto propia del color si existe; si no, queda la foto que se está viendo.
     show(current, c.image || null);
+    updateBuy();
   });
 
   // Devuelve el id de la sección que falta elegir (o '' si todo está elegido).
@@ -328,6 +332,44 @@
     setTimeout(function () { el.classList.remove('need-pick'); }, 1800);
   }
 
+  /* ---------- Stock en vivo ---------- */
+  var addBtn = document.getElementById('add-btn');
+  var igBtn = document.getElementById('ig-btn');
+  [addBtn, igBtn].forEach(function (b) {
+    if (b) b.setAttribute('data-label', b.querySelector('span:last-child').textContent);
+  });
+  // Estado de lo elegido: el color seleccionado o, si no hay color, el del producto.
+  function currentStock() {
+    var hasCol = D.colorsFor(p, state.variant).length > 0;
+    return hasCol && state.color ? D.stockState(p, state.color) : D.stockState(p);
+  }
+  function updateBuy() {
+    var prod = D.stockState(p);
+    var pillText = prod === 'out' ? 'Agotado' : prod === 'low' ? '¡Últimas unidades!' : p.stock;
+    document.getElementById('stock-text').textContent = pillText;
+    document.getElementById('stock-dot').className = 'w-2 h-2 rounded-full ' + (prod === 'out' ? 'bg-error' : prod === 'low' ? 'bg-secondary' : (inStock ? 'bg-tertiary' : 'bg-secondary'));
+    var st = currentStock();
+    var status = document.getElementById('color-status');
+    if (status) {
+      var sel = state.color ? D.stockState(p, state.color) : 'unknown';
+      status.textContent = D.stockLabel(sel);
+      status.className = 'ml-2 font-label-md text-label-md font-bold ' + (sel === 'out' ? 'text-error' : 'text-secondary');
+    }
+    var blocked = st === 'out';
+    [addBtn, igBtn].forEach(function (b) {
+      if (!b) return;
+      b.disabled = blocked;
+      b.classList.toggle('buy-disabled', blocked);
+      b.querySelector('span:last-child').textContent = blocked ? 'Agotado' : b.getAttribute('data-label');
+    });
+  }
+  document.addEventListener('sensa:stock', function () {
+    renderColors();
+    setColorLabel();
+    updateBuy();
+  });
+  updateBuy();
+
   /* ---------- Compra ---------- */
   var qty = 1;
   var qtyVal = document.getElementById('qty-val');
@@ -337,7 +379,6 @@
     document.getElementById('qty-inc').addEventListener('click', function () { setQty(qty + 1); });
   }
 
-  var addBtn = document.getElementById('add-btn');
   if (addBtn) {
     addBtn.addEventListener('click', function () {
       var miss = missingSection();

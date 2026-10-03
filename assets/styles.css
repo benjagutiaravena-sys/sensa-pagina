@@ -143,6 +143,18 @@ body.no-bottom-nav .toast { bottom: 1.5rem; }
 .swatch:focus-visible { outline-offset: 3px; }
 .opt-pill[aria-checked="true"] { box-shadow: 0 6px 16px -4px rgba(42, 40, 51, 0.25); }
 
+/* Stock: color agotado (tachado) y con pocas unidades (punto naranja) */
+.swatch.is-out { opacity: 0.5; }
+.swatch.is-out::before {
+  content: ''; position: absolute; left: 8%; right: 8%; top: 50%; height: 2px; border-radius: 2px;
+  background: #1c1a25; transform: rotate(-45deg); z-index: 2; pointer-events: none;
+}
+.swatch.is-low::before {
+  content: ''; position: absolute; top: -2px; right: -2px; width: 11px; height: 11px; border-radius: 9999px;
+  background: #F28C28; box-shadow: 0 0 0 2px #fdf8ff; z-index: 2; pointer-events: none;
+}
+.buy-disabled, .buy-disabled:hover { opacity: 0.55; cursor: not-allowed; pointer-events: none; }
+
 /* Aviso cuando se intenta comprar sin elegir color/versión */
 @keyframes nudge { 0%, 100% { transform: translateX(0); } 20% { transform: translateX(-6px); } 40% { transform: translateX(6px); } 60% { transform: translateX(-4px); } 80% { transform: translateX(4px); } }
 .need-pick { animation: nudge 0.5s ease; box-shadow: 0 0 0 3px var(--c-lavender); padding: 0.6rem; margin: -0.6rem; }

@@ -69,6 +69,7 @@
       var p = D.find(slug);
       opts = opts || {};
       if (!p || p.price == null || !validOptions(p, opts)) return false;
+      if (D.isSoldOut && D.isSoldOut(p, opts.color)) return false; // agotado
       var i = indexOf(keyOf(slug, opts));
       var add = Math.max(1, qty || 1);
       if (i === -1) {
@@ -362,15 +363,18 @@
 
   function cardHTML(p) {
     var note = D.cardNote(p);
+    var sold = D.isSoldOut && D.isSoldOut(p);
     return '' +
       '<div class="reveal-up h-full" data-category="' + p.category + '" data-price="' + p.price + '">' +
         '<article class="sensory-card h-full flex flex-col justify-between p-2.5 rounded-lg bg-surface-container-lowest shadow-rest hover:shadow-raised">' +
           '<div class="flex flex-col">' +
             '<div class="relative w-full aspect-square rounded-DEFAULT bg-surface-container overflow-hidden">' +
               '<a href="/producto/' + p.slug + '" class="absolute inset-0 flex items-center justify-center p-2" aria-label="Ver ' + esc(p.name) + '">' +
-                '<img class="tray-img' + (p.blend ? ' blend' : '') + ' w-full h-full object-contain" loading="lazy" src="' + p.image + '" alt="' + esc(p.alt) + '">' +
+                '<img class="tray-img' + (p.blend ? ' blend' : '') + ' w-full h-full object-contain' + (sold ? ' opacity-50 grayscale' : '') + '" loading="lazy" src="' + p.image + '" alt="' + esc(p.alt) + '">' +
               '</a>' +
-              '<span class="absolute top-2 left-2 px-2 py-0.5 rounded-full ' + p.badgeClass + ' font-label-sm text-label-sm font-bold shadow-sm pointer-events-none">' + esc(p.badge) + '</span>' +
+              (sold
+                ? '<span class="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-graphite text-surface font-label-sm text-label-sm font-bold shadow-sm pointer-events-none">Agotado</span>'
+                : '<span class="absolute top-2 left-2 px-2 py-0.5 rounded-full ' + p.badgeClass + ' font-label-sm text-label-sm font-bold shadow-sm pointer-events-none">' + esc(p.badge) + '</span>') +
               '<button type="button" data-fav="' + p.slug + '" aria-pressed="false" aria-label="Guardar ' + esc(p.name) + ' en favoritos" class="fav-btn squish-btn absolute top-2 right-2 w-7 h-7 rounded-full bg-surface/90 backdrop-blur-sm flex items-center justify-center text-on-surface-variant hover:text-error shadow-sm">' +
                 '<span class="material-symbols-outlined text-[16px]">favorite</span>' +
               '</button>' +
@@ -400,8 +404,8 @@
     return '' +
       '<a class="group flex flex-col rounded-lg bg-surface-container-lowest p-space-sm shadow-rest hover:shadow-raised hover:-translate-y-1 transition-all" href="/producto/' + p.slug + '">' +
         '<div class="aspect-square w-full rounded-DEFAULT bg-surface-container overflow-hidden mb-2 relative flex items-center justify-center p-2">' +
-          '<img alt="' + esc(p.alt) + '" class="tray-img' + (p.blend ? ' blend' : '') + ' w-full h-full object-contain group-hover:scale-105" loading="lazy" src="' + p.image + '">' +
-          '<span class="absolute top-2 right-2 px-2 py-0.5 rounded-full bg-surface-container-lowest/80 backdrop-blur-sm font-label-sm text-label-sm font-bold text-on-surface">' + esc(p.badge) + '</span>' +
+          '<img alt="' + esc(p.alt) + '" class="tray-img' + (p.blend ? ' blend' : '') + ' w-full h-full object-contain group-hover:scale-105' + (D.isSoldOut && D.isSoldOut(p) ? ' opacity-50 grayscale' : '') + '" loading="lazy" src="' + p.image + '">' +
+          '<span class="absolute top-2 right-2 px-2 py-0.5 rounded-full bg-surface-container-lowest/80 backdrop-blur-sm font-label-sm text-label-sm font-bold text-on-surface">' + (D.isSoldOut && D.isSoldOut(p) ? 'Agotado' : esc(p.badge)) + '</span>' +
         '</div>' +
         '<span class="font-label-sm text-label-sm text-on-surface-variant uppercase font-semibold line-clamp-1">' + esc(p.kicker) + '</span>' +
         '<h4 class="font-title-md text-title-md text-on-surface font-bold mt-0.5 line-clamp-2">' + esc(p.name) + '</h4>' +
