@@ -4,6 +4,7 @@
 //   price       número en CLP, o null si aún no hay precio (se muestra "Consultar precio").
 //   colors      lista de colores elegibles [{ id, name, hex | swatch, image? }]. Si está vacía NO se muestra selector.
 //               `image` (opcional) = foto propia de ese color; si falta se usa la foto principal.
+//   randomColors colores que pueden salir cuando el color es al azar [{ id, name, hex }]; solo informativos, no se eligen.
 //   variants    versiones elegibles [{ id, name }] (ej. Glitter / Mate). Si no hay, no se muestra selector.
 //   colorLabel  texto informativo cuando el producto no tiene selector de color.
 //   stock       texto de disponibilidad.
@@ -186,7 +187,9 @@
         ],
         blend: false,
         stock: 'En stock',
-        colors: DUMPLING_COLORS.glitter,
+        // Los colores salen al azar: se muestran como referencia, no se eligen.
+        randomColors: DUMPLING_COLORS.glitter,
+        colorLabel: 'Colores al azar',
         description: 'Adorable dumpling squishy con carita kawaii y glitter. Textura suave y esponjosa.'
       },
       {
@@ -201,7 +204,8 @@
         alt: 'Cuatro dumplings squishy mate en sus cajas de bambú: rosado, amarillo, celeste y blanco',
         blend: false,
         stock: 'En stock',
-        colors: DUMPLING_COLORS.mate,
+        randomColors: DUMPLING_COLORS.mate,
+        colorLabel: 'Colores al azar',
         description: 'Adorable dumpling squishy mate con carita kawaii. Textura suave y esponjosa, sin brillo.'
       }
     ],
@@ -274,6 +278,7 @@
   // Colores de los puntitos de la tarjeta.
   D.cardDots = function (p) {
     if (D.hasColors(p)) return p.colors.slice(0, 6).map(function (c) { return D.swatchBg(c); });
+    if (p.randomColors) return p.randomColors.map(function (c) { return D.swatchBg(c); });
     return p.dots || [];
   };
 })();
