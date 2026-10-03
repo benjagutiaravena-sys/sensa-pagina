@@ -29,8 +29,9 @@
   // Una línea es válida si las opciones que exige el producto están elegidas.
   function validOptions(p, o) {
     o = o || {};
-    if (D.hasColors(p) && !D.color(p, o.color)) return false;
     if (D.hasVariants(p) && !D.variant(p, o.variant)) return false;
+    var avail = D.colorsFor(p, o.variant);
+    if (avail.length && !avail.some(function (c) { return c.id === o.color; })) return false;
     return true;
   }
   var items = (function () {

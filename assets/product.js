@@ -103,13 +103,9 @@
     '<section id="sel-color" class="flex flex-col gap-space-xs rounded-lg" aria-label="Color">' +
       '<div class="flex items-center justify-between font-label-lg text-label-lg">' +
         '<span class="text-on-surface">Color: <strong id="color-label" class="text-primary font-bold">Elige un color</strong></span>' +
-        '<span class="font-label-sm text-label-sm text-on-surface-variant">' + p.colors.length + ' colores</span>' +
+        '<span id="color-count" class="font-label-sm text-label-sm text-on-surface-variant"></span>' +
       '</div>' +
-      '<div role="radiogroup" aria-label="Colores" class="swatch-row flex flex-wrap items-center gap-3 pt-5 pb-1">' +
-        p.colors.map(function (c) {
-          return '<button type="button" role="radio" aria-checked="false" aria-label="' + S.esc(c.name) + '" data-color="' + c.id + '" data-name="' + S.esc(c.name) + '" class="swatch"><span style="background:' + D.swatchBg(c) + '"></span></button>';
-        }).join('') +
-      '</div>' +
+      '<div id="swatch-row" role="radiogroup" aria-label="Colores" class="swatch-row pt-5 pb-1"></div>' +
     '</section>' : '';
 
   var staticColor = (!D.hasColors(p) && p.colorLabel) ?
@@ -136,15 +132,23 @@
     '</button>';
 
   /* ---------- Detalles ---------- */
+  function names(list) { return list.map(function (c) { return c.name; }).join(', '); }
+  // "Glitter: Dorado, Vino · Mate: Rosado, Celeste" si los colores dependen de la versión; si no, lista simple.
+  function colorsSummary() {
+    if (D.hasVariants(p) && p.colors.some(function (c) { return c.variants; })) {
+      return p.variants.map(function (v) { return v.name + ': ' + names(D.colorsFor(p, v.id)); }).join(' · ');
+    }
+    return names(p.colors);
+  }
   var detailRows = [row('Precio', D.priceText(p), true), row('Disponibilidad', S.esc(p.stock), false)];
   var shade = true;
   if (D.hasVariants(p)) { detailRows.push(row('Versiones', S.esc(p.variants.map(function (v) { return v.name; }).join(' y ')), shade)); shade = !shade; }
-  if (D.hasColors(p)) { detailRows.push(row('Colores', S.esc(p.colors.map(function (c) { return c.name; }).join(', ')), shade)); shade = !shade; }
+  if (D.hasColors(p)) { detailRows.push(row('Colores', S.esc(colorsSummary()), shade)); shade = !shade; }
   else if (p.colorLabel) { detailRows.push(row('Color', S.esc(p.colorLabel), shade)); shade = !shade; }
   detailRows.push(row('Compra', 'Por Instagram ' + D.handle, shade));
 
   var descExtra = D.hasColors(p)
-    ? '<p class="mt-3 font-semibold text-on-surface">Colores: ' + S.esc(p.colors.map(function (c) { return c.name; }).join(', ')) + '.</p>'
+    ? '<p class="mt-3 font-semibold text-on-surface">Colores: ' + S.esc(colorsSummary()) + '.</p>'
     : (p.colorNote ? '<p class="mt-3 font-semibold text-on-surface">' + S.esc(p.colorNote) + '</p>' : '');
 
   root.innerHTML =
@@ -247,28 +251,59 @@
     });
   }
 
+  // Pinta los colores disponibles para la versión elegida (todos, si el producto no tiene versiones).
+  var swatchRow = document.getElementById('swatch-row');
+  function renderColors() {
+    if (!swatchRow) return;
+    var needVariant = D.hasVariants(p) && !state.variant && p.colors.some(function (c) { return c.variants; });
+    var list = needVariant ? [] : D.colorsFor(p, state.variant);
+    document.getElementById('color-count').textContent = needVariant ? '' : list.length + ' colores';
+    if (needVariant) {
+      swatchRow.className = 'pt-2 pb-1 font-body-sm text-body-sm text-on-surface-variant';
+      swatchRow.innerHTML = 'Elige primero una versión para ver sus colores.';
+      return;
+    }
+    swatchRow.className = 'swatch-row pt-5 pb-1';
+    swatchRow.innerHTML = list.map(function (c) {
+      var on = c.id === state.color;
+      return '<button type="button" role="radio" aria-checked="' + on + '" aria-label="' + S.esc(c.name) + '" data-color="' + c.id + '" data-name="' + S.esc(c.name) + '" class="swatch"><span style="background:' + D.swatchBg(c) + '"></span></button>';
+    }).join('');
+  }
+  function setColorLabel() {
+    var el = document.getElementById('color-label');
+    if (el) el.textContent = state.color ? D.color(p, state.color).name : 'Elige un color';
+  }
+  renderColors();
+
   document.querySelectorAll('[data-variant]').forEach(function (btn) {
     btn.addEventListener('click', function () {
       state.variant = btn.getAttribute('data-variant');
       markChecked('[data-variant]', 'data-variant', state.variant);
-      document.getElementById('variant-label').textContent = D.variant(p, state.variant).name;
+      var v = D.variant(p, state.variant);
+      document.getElementById('variant-label').textContent = v.name;
+      // Si el color elegido no existe en esta versión, se limpia.
+      if (state.color && !D.colorsFor(p, state.variant).some(function (c) { return c.id === state.color; })) state.color = null;
+      renderColors();
+      setColorLabel();
+      // Muestra la foto de esa versión si la hay.
+      if (multi && v.photo != null && v.photo < gallery.length) show(v.photo);
     });
   });
-  document.querySelectorAll('[data-color]').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      state.color = btn.getAttribute('data-color');
-      var c = D.color(p, state.color);
-      markChecked('[data-color]', 'data-color', state.color);
-      document.getElementById('color-label').textContent = c.name;
-      // Foto propia del color si existe; si no, queda la foto que se está viendo.
-      show(current, c.image || null);
-    });
+  if (swatchRow) swatchRow.addEventListener('click', function (e) {
+    var btn = e.target.closest('[data-color]');
+    if (!btn) return;
+    state.color = btn.getAttribute('data-color');
+    var c = D.color(p, state.color);
+    markChecked('[data-color]', 'data-color', state.color);
+    setColorLabel();
+    // Foto propia del color si existe; si no, queda la foto que se está viendo.
+    show(current, c.image || null);
   });
 
   // Devuelve el id de la sección que falta elegir (o '' si todo está elegido).
   function missingSection() {
     if (D.hasVariants(p) && !state.variant) return 'sel-variant';
-    if (D.hasColors(p) && !state.color) return 'sel-color';
+    if (D.colorsFor(p, state.variant).length && !state.color) return 'sel-color';
     return '';
   }
   function warnMissing(sectionId) {

@@ -27,6 +27,37 @@
     }
   };
 
+  // Fidget cube: cada combinación es cuerpo + detalles (swatch dividido en dos tonos).
+  function duo(id, name, body, accent) {
+    return { id: id, name: name, hex: body, swatch: 'linear-gradient(135deg, ' + body + ' 0 50%, ' + accent + ' 50% 100%)' };
+  }
+  var FIDGET_COLORS = [
+    duo('celeste-negro',   'Celeste y negro',    '#3FA9E6', '#1F1F24'),
+    duo('negro-azul',      'Negro y azul',       '#1F1F24', '#2F6FE0'),
+    duo('morado-negro',    'Morado y negro',     '#8E7BD1', '#1F1F24'),
+    duo('blanco-negro',    'Blanco y negro',     '#F6F4F0', '#1F1F24'),
+    duo('rosado-negro',    'Rosado y negro',     '#EF6F9E', '#1F1F24'),
+    duo('blanco-amarillo', 'Blanco y amarillo',  '#F6F4F0', '#F2C94C'),
+    duo('blanco-verde',    'Blanco y verde',     '#F6F4F0', '#5ECB8B'),
+    duo('blanco-naranjo',  'Blanco y naranjo',   '#F6F4F0', '#F28C28'),
+    duo('gris-negro',      'Gris y negro',       '#7B7F85', '#1F1F24'),
+    duo('gris-rojo',       'Gris y rojo',        '#7B7F85', '#C0153F'),
+    duo('negro-verde',     'Negro y verde',      '#1F1F24', '#4DBE7A'),
+    duo('verde-lima-negro','Verde lima y negro', '#8FE06F', '#1F1F24')
+  ];
+  // Dumplings: los colores dependen de la versión (variants = en qué versiones existe).
+  var DUMPLING_COLORS = [
+    { id: 'glitter-dorado',   name: 'Dorado',   hex: '#B98A2E', variants: ['glitter'] },
+    { id: 'glitter-vino',     name: 'Vino',     hex: '#8C2A4B', variants: ['glitter'] },
+    { id: 'glitter-naranjo',  name: 'Naranjo',  hex: '#F28C28', variants: ['glitter'] },
+    { id: 'glitter-rosado',   name: 'Rosado',   hex: '#F2607F', variants: ['glitter'] },
+    { id: 'glitter-turquesa', name: 'Turquesa', hex: '#3AAFB9', variants: ['glitter'] },
+    { id: 'mate-rosado',      name: 'Rosado',   hex: '#F4A3C0', variants: ['mate'] },
+    { id: 'mate-amarillo',    name: 'Amarillo', hex: '#F7D84A', variants: ['mate'] },
+    { id: 'mate-celeste',     name: 'Celeste',  hex: '#7CCBF2', variants: ['mate'] },
+    { id: 'mate-blanco',      name: 'Blanco',   hex: '#FFFFFF', variants: ['mate'] }
+  ];
+
   window.SENSA = {
     handle: '@sensa.usm',
     instagram: 'https://www.instagram.com/sensa.usm',
@@ -66,6 +97,10 @@
         badgeClass: 'bg-surface-container-highest text-on-surface',
         image: '/images/opt/gel-cube.webp',
         alt: 'Cubo gel liso verde translúcido junto a su caja Cube Squeeze',
+        // Fotos secundarias (galería de la página de producto)
+        moreImages: [
+          { src: '/images/opt/cubo-gel-liso-colores.webp', alt: 'Seis cubos gel lisos en sus cajas Cube Squeeze: azul, verde agua, verde, morado, rosado y naranjo' }
+        ],
         blend: false,
         stock: 'En stock',
         colors: [C.naranjo, C.morado, C.verde, C.verdeAgua, C.azul, C.rosado],
@@ -81,6 +116,11 @@
         badgeClass: 'bg-surface-container-highest text-on-surface',
         image: '/images/opt/cubo-gel-forma.webp',
         alt: 'Cubo gel rosado con forma de burbujas junto a su caja Squish Cube',
+        moreImages: [
+          { src: '/images/opt/cubo-gel-forma-colores-1.webp', alt: 'Cubos gel con forma de burbujas en sus cajas Squish Cube: rosado, naranjo, morado y azul' },
+          { src: '/images/opt/cubo-gel-forma-colores-2.webp', alt: 'Cubos gel con forma de burbujas en sus cajas Squish Cube, vista de frente' },
+          { src: '/images/opt/cubo-gel-forma-colores-3.webp', alt: 'Cubos gel con forma de burbujas en sus cajas Squish Cube, vista en ángulo' }
+        ],
         blend: false,
         stock: 'En stock',
         colors: [C.rosado, C.azul, C.morado, C.naranjo],
@@ -96,6 +136,10 @@
         badgeClass: 'bg-surface-container-highest text-on-surface',
         image: '/images/opt/cubo-gel-cinta.webp',
         alt: 'Cubo gel transparente con cinta holográfica en su interior junto a su caja Squish Cube',
+        moreImages: [
+          { src: '/images/opt/cubo-gel-cinta-colores-1.webp', alt: 'Cubos gel con cinta holográfica en sus cajas Cube Squeeze: celeste, rosado, amarillo y morado' },
+          { src: '/images/opt/cubo-gel-cinta-colores-2.webp', alt: 'Cuatro cubos gel con cinta holográfica en sus cajas Cube Squeeze' }
+        ],
         blend: false,
         stock: 'En stock',
         colors: [C.rosadoClaroTransp, C.morado, C.celeste, C.amarillo],
@@ -113,14 +157,13 @@
         alt: 'Cubo Antiestrés Sensorial con botones, palanca y bola metálica, junto a su caja',
         // Fotos secundarias (galería de la página de producto)
         moreImages: [
-          { src: '/images/opt/fidget-cube-colores.webp', alt: 'Cubos antiestrés sensoriales en blanco con fucsia, morado y rosado, junto a su caja' }
+          { src: '/images/opt/fidget-cube-colores.webp', alt: 'Cubos antiestrés sensoriales en blanco con fucsia, morado y rosado, junto a su caja' },
+          { src: '/images/opt/fidget-cubos-colores-1.webp', alt: 'Doce cubos antiestrés sensoriales de distintos colores dispuestos en círculo' },
+          { src: '/images/opt/fidget-cubos-colores-2.webp', alt: 'Seis cubos antiestrés sensoriales en fila de distintos colores' }
         ],
         blend: false,
         stock: 'En stock',
-        colors: [],
-        colorLabel: 'Color al azar',
-        colorNote: 'Color al azar.',
-        dots: ['#B9A7E8', '#F6DC8C', '#A8DDB5'],
+        colors: FIDGET_COLORS,
         description: '6 lados con diferentes texturas y mecanismos sensoriales para mantener tus manos ocupadas y tu mente enfocada.'
       },
       {
@@ -135,18 +178,18 @@
         alt: 'Dumpling squishy morado con carita kawaii, junto a su caja de bambú',
         // Fotos secundarias (galería de la página de producto)
         moreImages: [
+          { src: '/images/opt/dumplings-glitter.webp', alt: 'Cinco dumplings squishy con glitter en sus cajas de bambú: dorado, vino, naranjo, rosado y turquesa' },
+          { src: '/images/opt/dumplings-mate.webp', alt: 'Cuatro dumplings squishy mate en sus cajas de bambú: rosado, amarillo, celeste y blanco' },
           { src: '/images/opt/bao-squishy.webp', alt: 'Dos bao squishy rosados con carita kawaii: uno con glitter y otro mate' }
         ],
         blend: false,
         stock: 'En stock',
+        // photo = posición en la galería (0 = foto principal) que se muestra al elegir esa versión
         variants: [
-          { id: 'glitter', name: 'Glitter' },
-          { id: 'mate', name: 'Mate' }
+          { id: 'glitter', name: 'Glitter', photo: 1 },
+          { id: 'mate', name: 'Mate', photo: 2 }
         ],
-        colors: [],
-        colorLabel: 'Colores al azar',
-        colorNote: 'Colores al azar.',
-        dots: ['#B9A7E8', '#F6DC8C', '#A8DDB5'],
+        colors: DUMPLING_COLORS,
         description: 'Adorable dumpling squishy con carita kawaii. Textura suave y esponjosa. Disponible en versión glitter y versión mate.'
       }
     ],
@@ -188,6 +231,12 @@
   D.color = function (p, id) {
     return (p.colors || []).find(function (c) { return c.id === id; });
   };
+  // Colores disponibles según la versión elegida (si un color no define versiones, vale para todas).
+  D.colorsFor = function (p, variantId) {
+    return (p.colors || []).filter(function (c) {
+      return !c.variants || (variantId && c.variants.indexOf(variantId) !== -1);
+    });
+  };
   D.variant = function (p, id) {
     return (p.variants || []).find(function (v) { return v.id === id; });
   };
@@ -205,13 +254,13 @@
   D.swatchBg = function (c) { return c.swatch || c.hex; };
   // Nota corta bajo la tarjeta del catálogo.
   D.cardNote = function (p) {
-    if (D.hasColors(p)) return p.colors.length + ' colores';
     if (D.hasVariants(p)) return p.variants.map(function (v) { return v.name; }).join(' y ');
+    if (D.hasColors(p)) return p.colors.length + ' colores';
     return (p.colorLabel || '').split(',')[0];
   };
   // Colores de los puntitos de la tarjeta.
   D.cardDots = function (p) {
-    if (D.hasColors(p)) return p.colors.map(function (c) { return D.swatchBg(c); });
+    if (D.hasColors(p)) return p.colors.slice(0, 6).map(function (c) { return D.swatchBg(c); });
     return p.dots || [];
   };
 })();
