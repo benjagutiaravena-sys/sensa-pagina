@@ -7,6 +7,8 @@
 
   var match = location.pathname.match(/\/producto\/([^\/?#]+)/);
   var slug = match ? decodeURIComponent(match[1]) : (new URLSearchParams(location.search).get('p') || '');
+  // Si el link es de un producto que se fusionó con otro, lleva al producto vigente.
+  if (D.aliases[slug]) { location.replace('/producto/' + D.aliases[slug] + location.search + location.hash); return; }
   var p = D.find(slug);
 
   // Volver: si venimos del propio sitio, regresa a la posición anterior del catálogo.
@@ -43,6 +45,21 @@
   var others = D.products.filter(function (x) { return x.slug !== p.slug; });
   others.sort(function (a, b) { return (b.category === p.category) - (a.category === p.category); });
   others = others.slice(0, 4);
+
+  // Galería: la foto principal primero y las secundarias después.
+  var gallery = [{ src: p.image, alt: p.alt }].concat(p.moreImages || []);
+  var multi = gallery.length > 1;
+  var arrowBtn = function (id, side, icon, label) {
+    return '<button type="button" id="' + id + '" aria-label="' + label + '" class="squish-btn absolute ' + side + '-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-surface-container-lowest/90 text-on-surface shadow-rest flex items-center justify-center">' +
+      '<span class="material-symbols-outlined text-[20px]">' + icon + '</span></button>';
+  };
+  var thumbsHTML = multi ?
+    '<div id="thumbs" class="flex items-center gap-3 overflow-x-auto no-scrollbar p-1" role="group" aria-label="Fotos del producto">' +
+      gallery.map(function (g, i) {
+        return '<button type="button" data-thumb="' + i + '" aria-label="Ver foto ' + (i + 1) + ' de ' + gallery.length + '" class="thumb shrink-0 w-20 h-20 rounded-DEFAULT overflow-hidden bg-surface-container p-1 transition-all">' +
+          '<img src="' + g.src + '" alt="' + S.esc(g.alt) + '" loading="lazy" class="w-full h-full object-contain rounded-[12px]"></button>';
+      }).join('') +
+    '</div>' : '';
 
   var highlights = p.highlights ? (
     '<ul class="flex flex-col gap-2 mt-3">' + p.highlights.map(function (h) {
@@ -138,10 +155,12 @@
     '</nav>' +
 
     '<div class="mt-space-sm lg:grid lg:grid-cols-2 lg:gap-margin-lg lg:items-start">' +
-      '<section aria-label="Foto del producto" class="lg:sticky lg:top-24">' +
+      '<section aria-label="Fotos del producto" class="lg:sticky lg:top-24 flex flex-col gap-space-sm">' +
         '<div class="relative w-full aspect-square bg-surface-container rounded-lg overflow-hidden shadow-rest flex items-center justify-center p-space-md">' +
-          '<img id="main-img" src="' + p.image + '" alt="' + S.esc(p.alt) + '" class="tray-img' + (p.blend ? ' blend' : '') + ' w-full h-full object-contain rounded-xl">' +
+          '<img id="main-img" src="' + p.image + '" alt="' + S.esc(p.alt) + '" class="tray-img' + (p.blend ? ' blend' : '') + ' w-full h-full object-contain rounded-xl transition-opacity duration-200">' +
+          (multi ? arrowBtn('img-prev', 'left', 'arrow_back', 'Foto anterior') + arrowBtn('img-next', 'right', 'arrow_forward', 'Foto siguiente') : '') +
         '</div>' +
+        thumbsHTML +
       '</section>' +
 
       '<div class="flex flex-col gap-space-md mt-space-md lg:mt-0">' +
@@ -188,6 +207,32 @@
   /* ---------- Selección de versión / color ---------- */
   var state = { variant: null, color: null };
   var mainImg = document.getElementById('main-img');
+  var current = 0;
+
+  function show(i, srcOverride) {
+    current = (i + gallery.length) % gallery.length;
+    var g = gallery[current];
+    mainImg.style.opacity = '0.4';
+    setTimeout(function () {
+      mainImg.src = srcOverride || g.src;
+      mainImg.alt = g.alt;
+      mainImg.style.opacity = '1';
+    }, 120);
+    document.querySelectorAll('[data-thumb]').forEach(function (b) {
+      var on = Number(b.getAttribute('data-thumb')) === current;
+      b.classList.toggle('shadow-[0_0_0_2.5px_#2A2833]', on);
+      b.classList.toggle('opacity-70', !on);
+    });
+  }
+  if (multi) {
+    show(0);
+    document.getElementById('img-prev').addEventListener('click', function () { show(current - 1); });
+    document.getElementById('img-next').addEventListener('click', function () { show(current + 1); });
+    document.getElementById('thumbs').addEventListener('click', function (e) {
+      var b = e.target.closest('[data-thumb]');
+      if (b) show(Number(b.getAttribute('data-thumb')));
+    });
+  }
 
   function markChecked(selector, attr, value) {
     document.querySelectorAll(selector).forEach(function (el) {
@@ -215,8 +260,8 @@
       var c = D.color(p, state.color);
       markChecked('[data-color]', 'data-color', state.color);
       document.getElementById('color-label').textContent = c.name;
-      // Foto propia del color si existe; si no, queda la foto principal del producto.
-      mainImg.src = c.image || p.image;
+      // Foto propia del color si existe; si no, queda la foto que se está viendo.
+      show(current, c.image || null);
     });
   });
 

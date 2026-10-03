@@ -74,8 +74,7 @@
       {
         slug: 'cubo-gel-forma',
         name: 'Cubo Gel con Forma',
-        // TODO: definir precio (pendiente). Mientras sea null se muestra "Consultar precio".
-        price: null,
+        price: 3000, // mismo precio que el Cubo Gel Liso
         category: 'gel',
         kicker: 'Gel con forma de burbujas',
         badge: 'Forma de burbujas',
@@ -83,15 +82,14 @@
         image: '/images/opt/cubo-gel-forma.webp',
         alt: 'Cubo gel rosado con forma de burbujas junto a su caja Squish Cube',
         blend: false,
-        stock: 'Consultar disponibilidad', // TODO: confirmar stock
+        stock: 'En stock',
         colors: [C.rosado, C.azul, C.morado, C.naranjo],
         description: 'Cubo de gel con forma de burbujas, para apretar y liberar tensión.'
       },
       {
         slug: 'cubo-gel-cinta',
         name: 'Cubo Gel con Cinta',
-        // TODO: definir precio (pendiente). Mientras sea null se muestra "Consultar precio".
-        price: null,
+        price: 3000, // mismo precio que el Cubo Gel Liso
         category: 'gel',
         kicker: 'Gel con cinta holográfica',
         badge: 'Cinta holográfica',
@@ -99,7 +97,7 @@
         image: '/images/opt/cubo-gel-cinta.webp',
         alt: 'Cubo gel transparente con cinta holográfica en su interior junto a su caja Squish Cube',
         blend: false,
-        stock: 'Consultar disponibilidad', // TODO: confirmar stock
+        stock: 'En stock',
         colors: [C.rosadoClaroTransp, C.morado, C.celeste, C.amarillo],
         description: 'Cubo de gel transparente con cinta holográfica en su interior, para apretar y liberar tensión.'
       },
@@ -113,6 +111,10 @@
         badgeClass: 'bg-surface-container-highest text-on-surface',
         image: '/images/opt/fidget-cube.webp',
         alt: 'Cubo Antiestrés Sensorial con botones, palanca y bola metálica, junto a su caja',
+        // Fotos secundarias (galería de la página de producto)
+        moreImages: [
+          { src: '/images/opt/fidget-cube-colores.webp', alt: 'Cubos antiestrés sensoriales en blanco con fucsia, morado y rosado, junto a su caja' }
+        ],
         blend: false,
         stock: 'En stock',
         colors: [],
@@ -120,23 +122,6 @@
         colorNote: 'Color al azar.',
         dots: ['#B9A7E8', '#F6DC8C', '#A8DDB5'],
         description: '6 lados con diferentes texturas y mecanismos sensoriales para mantener tus manos ocupadas y tu mente enfocada.'
-      },
-      {
-        slug: 'fidget-cube',
-        name: 'Fidget Cube',
-        // TODO: definir precio (pendiente). Mientras sea null se muestra "Consultar precio".
-        price: null,
-        category: 'fidgets',
-        kicker: 'Fidget táctil',
-        badge: 'Fidget',
-        badgeClass: 'bg-surface-container-highest text-on-surface',
-        image: '/images/opt/fidget-cube-colores.webp',
-        alt: 'Tres fidget cubes de colores (blanco con fucsia, morado y rosado) junto a su caja',
-        blend: false,
-        stock: 'Consultar disponibilidad', // TODO: confirmar stock
-        // TODO: colores pendientes. Con la lista vacía no se muestra el selector. No inventar colores.
-        colors: [],
-        description: 'Cubo fidget con botones, palanca y bola metálica para mantener tus manos ocupadas.'
       },
       {
         slug: 'dumplings',
@@ -148,34 +133,21 @@
         badgeClass: 'bg-tertiary-fixed text-on-tertiary-fixed',
         image: '/images/opt/dumpling.webp',
         alt: 'Dumpling squishy morado con carita kawaii, junto a su caja de bambú',
+        // Fotos secundarias (galería de la página de producto)
+        moreImages: [
+          { src: '/images/opt/bao-squishy.webp', alt: 'Dos bao squishy rosados con carita kawaii: uno con glitter y otro mate' }
+        ],
         blend: false,
         stock: 'En stock',
-        colors: [],
-        colorLabel: 'Colores al azar, con brillos o lisos',
-        colorNote: 'Colores al azar, con brillos o lisos.',
-        dots: ['#B9A7E8', '#F6DC8C', '#A8DDB5'],
-        description: 'Adorable dumpling squishy con carita kawaii. Textura suave y esponjosa.'
-      },
-      {
-        slug: 'bao-squishy',
-        name: 'Bao Squishy',
-        // TODO: definir precio (pendiente). Mientras sea null se muestra "Consultar precio".
-        price: null,
-        category: 'squishies',
-        kicker: 'Squishy bao kawaii',
-        badge: 'Glitter y mate',
-        badgeClass: 'bg-tertiary-fixed text-on-tertiary-fixed',
-        image: '/images/opt/bao-squishy.webp',
-        alt: 'Dos bao squishy rosados con carita kawaii: uno con glitter y otro mate',
-        blend: false,
-        stock: 'Consultar disponibilidad', // TODO: confirmar stock
         variants: [
           { id: 'glitter', name: 'Glitter' },
           { id: 'mate', name: 'Mate' }
         ],
-        // TODO: colores pendientes. Con la lista vacía no se muestra el selector. No inventar colores.
         colors: [],
-        description: 'Bao squishy con carita kawaii, disponible en versión glitter y versión mate.'
+        colorLabel: 'Colores al azar',
+        colorNote: 'Colores al azar.',
+        dots: ['#B9A7E8', '#F6DC8C', '#A8DDB5'],
+        description: 'Adorable dumpling squishy con carita kawaii. Textura suave y esponjosa. Disponible en versión glitter y versión mate.'
       }
     ],
     steps: [
@@ -187,6 +159,12 @@
   };
 
   var D = window.SENSA;
+
+  // Links antiguos de productos que se fusionaron con otro.
+  D.aliases = {
+    'bao-squishy': 'dumplings',
+    'fidget-cube': 'cubo-antiestres-sensorial'
+  };
 
   D.find = function (slug) {
     return D.products.find(function (p) { return p.slug === slug; });
