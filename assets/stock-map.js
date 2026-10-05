@@ -18,8 +18,8 @@ window.SENSA_STOCK_MAP = {
     'butter': 'butter-squishy',
     'fidget cube': 'cubo-antiestres-sensorial',
     'cubo antiestres': 'cubo-antiestres-sensorial',
-    'dumpling glitter': 'dumplings-glitter',
-    'dumpling mate': 'dumplings-mate'
+    'dumpling glitter': 'dumplings',
+    'dumpling mate': 'dumplings'
   },
   // por producto: nombre del color en la hoja  →  id del color en products.js
   colors: {

@@ -109,14 +109,29 @@
     '</section>' : '';
 
   // Color al azar: se muestran los colores que pueden salir, sin selección.
-  var randomChips = p.randomColors ?
-    '<p class="font-body-sm text-body-sm text-on-surface-variant pt-1">Pueden salirte estos colores:</p>' +
-    '<ul class="flex flex-wrap gap-2 pt-1" aria-label="Colores que pueden salir">' +
-      p.randomColors.map(function (c) {
+  function chipList(list) {
+    return '<ul class="flex flex-wrap gap-2 pt-1" aria-label="Colores que pueden salir">' +
+      list.map(function (c) {
         return '<li class="inline-flex items-center gap-2 pl-1.5 pr-3 py-1 rounded-full bg-surface-container-low font-label-md text-label-md text-on-surface">' +
           '<span class="w-5 h-5 rounded-full" style="background:' + D.swatchBg(c) + ';box-shadow:inset 0 0 0 1px rgba(28,26,37,0.18)"></span>' + S.esc(c.name) + '</li>';
-      }).join('') +
-    '</ul>' : '';
+      }).join('') + '</ul>';
+  }
+  // Grupos (p. ej. Glitter / Mate) en el orden en que aparecen; sin grupos, una sola lista.
+  function randomGroups() {
+    var groups = [];
+    p.randomColors.forEach(function (c) {
+      var name = c.group || '';
+      var g = groups.filter(function (x) { return x.name === name; })[0];
+      if (!g) { g = { name: name, colors: [] }; groups.push(g); }
+      g.colors.push(c);
+    });
+    return groups;
+  }
+  var randomChips = p.randomColors ?
+    '<p class="font-body-sm text-body-sm text-on-surface-variant pt-1">Pueden salirte estos tipos y colores:</p>' +
+    randomGroups().map(function (g) {
+      return (g.name ? '<p class="font-label-md text-label-md font-bold text-on-surface pt-2">' + S.esc(g.name) + '</p>' : '') + chipList(g.colors);
+    }).join('') : '';
   var staticColor = (!D.hasColors(p) && p.colorLabel) ?
     '<section class="flex flex-col gap-space-xs" aria-label="Color"><div class="font-label-lg text-label-lg text-on-surface">Color: <strong class="text-primary font-bold">' + S.esc(p.colorLabel) + '</strong></div>' + randomChips + '</section>' : '';
 
@@ -142,6 +157,10 @@
 
   /* ---------- Detalles ---------- */
   function names(list) { return list.map(function (c) { return c.name; }).join(', '); }
+  // "Glitter: Dorado, Vino · Mate: Rosado, Celeste" para los colores al azar agrupados por tipo.
+  function randomSummary() {
+    return randomGroups().map(function (g) { return (g.name ? g.name + ': ' : '') + names(g.colors); }).join(' · ');
+  }
   // "Glitter: Dorado, Vino · Mate: Rosado, Celeste" si los colores dependen de la versión; si no, lista simple.
   function colorsSummary() {
     if (D.hasVariants(p) && p.colors.some(function (c) { return c.variants; })) {
@@ -153,13 +172,13 @@
   var shade = true;
   if (D.hasVariants(p)) { detailRows.push(row('Versiones', S.esc(p.variants.map(function (v) { return v.name; }).join(' y ')), shade)); shade = !shade; }
   if (D.hasColors(p)) { detailRows.push(row('Colores', S.esc(colorsSummary()), shade)); shade = !shade; }
-  else if (p.randomColors) { detailRows.push(row('Colores al azar', S.esc(names(p.randomColors)), shade)); shade = !shade; }
+  else if (p.randomColors) { detailRows.push(row('Tipo y color al azar', S.esc(randomSummary()), shade)); shade = !shade; }
   else if (p.colorLabel) { detailRows.push(row('Color', S.esc(p.colorLabel), shade)); shade = !shade; }
   detailRows.push(row('Compra', 'Por Instagram ' + D.handle, shade));
 
   var descExtra = D.hasColors(p)
     ? '<p class="mt-3 font-semibold text-on-surface">Colores: ' + S.esc(colorsSummary()) + '.</p>'
-    : p.randomColors ? '<p class="mt-3 font-semibold text-on-surface">Colores al azar: ' + S.esc(names(p.randomColors)) + '.</p>'
+    : p.randomColors ? '<p class="mt-3 font-semibold text-on-surface">Tipo y color al azar: ' + S.esc(randomSummary()) + '.</p>'
     : (p.colorNote ? '<p class="mt-3 font-semibold text-on-surface">' + S.esc(p.colorNote) + '</p>' : '');
 
   root.innerHTML =

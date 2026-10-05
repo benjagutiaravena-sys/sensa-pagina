@@ -46,7 +46,7 @@
     duo('negro-verde',     'Negro y verde',      '#1F1F24', '#4DBE7A'),
     duo('verde-lima-negro','Verde lima y negro', '#8FE06F', '#1F1F24')
   ];
-  // Dumplings: una paleta por producto (Glitter y Mate se venden por separado).
+  // Dumplings: colores que pueden salir en cada tipo (todo es al azar).
   var DUMPLING_COLORS = {
     glitter: [
       { id: 'glitter-dorado',   name: 'Dorado',   hex: '#B98A2E' },
@@ -62,6 +62,10 @@
       { id: 'mate-blanco',   name: 'Blanco',   hex: '#FFFFFF' }
     ]
   };
+
+  function tag(list, group) {
+    return list.map(function (c) { return { id: c.id, name: c.name, hex: c.hex, group: group }; });
+  }
 
   window.SENSA = {
     handle: '@sensa.usm',
@@ -104,7 +108,7 @@
         alt: 'Cubo gel liso verde translúcido junto a su caja Cube Squeeze',
         // Fotos secundarias (galería de la página de producto)
         moreImages: [
-          { src: '/images/opt/cubo-gel-liso-colores.webp', alt: 'Seis cubos gel lisos en sus cajas Cube Squeeze: azul, verde agua, verde, morado, rosado y naranjo' }
+          { src: '/images/opt/cubo-gel-liso-6-colores.webp', alt: 'Seis cubos gel lisos en sus cajas Cube Squeeze: azul, verde agua, verde, morado, rosado y naranjo' }
         ],
         blend: false,
         stock: 'En stock',
@@ -163,7 +167,7 @@
         // Fotos secundarias (galería de la página de producto)
         moreImages: [
           { src: '/images/opt/fidget-cube-colores.webp', alt: 'Cubos antiestrés sensoriales en blanco con fucsia, morado y rosado, junto a su caja' },
-          { src: '/images/opt/fidget-cubos-colores-1.webp', alt: 'Doce cubos antiestrés sensoriales de distintos colores dispuestos en círculo' },
+          { src: '/images/opt/fidget-cubos-12-colores.webp', alt: 'Doce cubos antiestrés sensoriales de distintos colores dispuestos en círculo' },
           { src: '/images/opt/fidget-cubos-colores-2.webp', alt: 'Seis cubos antiestrés sensoriales en fila de distintos colores' }
         ],
         blend: false,
@@ -172,41 +176,26 @@
         description: '6 lados con diferentes texturas y mecanismos sensoriales para mantener tus manos ocupadas y tu mente enfocada.'
       },
       {
-        slug: 'dumplings-glitter',
-        name: 'Dumplings Glitter',
+        slug: 'dumplings',
+        name: 'Dumplings',
         price: 3200,
         category: 'squishies',
-        kicker: 'Squishy con glitter',
-        badge: 'Glitter',
+        kicker: 'Squishy suave y esponjoso',
+        badge: 'Kawaii',
         badgeClass: 'bg-tertiary-fixed text-on-tertiary-fixed',
         image: '/images/opt/dumpling.webp',
         alt: 'Dumpling squishy morado con glitter y carita kawaii, junto a su caja de bambú',
         // Fotos secundarias (galería de la página de producto)
         moreImages: [
-          { src: '/images/opt/dumplings-glitter.webp', alt: 'Cinco dumplings squishy con glitter en sus cajas de bambú: dorado, vino, naranjo, rosado y turquesa' }
+          { src: '/images/opt/dumplings-glitter-colores.webp', alt: 'Cinco dumplings squishy con glitter en sus cajas de bambú: dorado, vino, naranjo, rosado y turquesa' },
+          { src: '/images/opt/dumplings-mate-colores.webp', alt: 'Cuatro dumplings squishy mate en sus cajas de bambú: amarillo, celeste, rosado y blanco' }
         ],
         blend: false,
         stock: 'En stock',
-        // Los colores salen al azar: se muestran como referencia, no se eligen.
-        randomColors: DUMPLING_COLORS.glitter,
-        colorLabel: 'Colores al azar',
-        description: 'Adorable dumpling squishy con carita kawaii y glitter. Textura suave y esponjosa.'
-      },
-      {
-        slug: 'dumplings-mate',
-        name: 'Dumplings Mate',
-        price: 3200,
-        category: 'squishies',
-        kicker: 'Squishy mate',
-        badge: 'Mate',
-        badgeClass: 'bg-tertiary-fixed text-on-tertiary-fixed',
-        image: '/images/opt/dumplings-mate.webp',
-        alt: 'Cuatro dumplings squishy mate en sus cajas de bambú: rosado, amarillo, celeste y blanco',
-        blend: false,
-        stock: 'En stock',
-        randomColors: DUMPLING_COLORS.mate,
-        colorLabel: 'Colores al azar',
-        description: 'Adorable dumpling squishy mate con carita kawaii. Textura suave y esponjosa, sin brillo.'
+        // El tipo (glitter o mate) y el color salen al azar: se muestran como referencia, no se eligen.
+        randomColors: tag(DUMPLING_COLORS.glitter, 'Glitter').concat(tag(DUMPLING_COLORS.mate, 'Mate')),
+        colorLabel: 'Tipo y color al azar',
+        description: 'Adorable dumpling squishy con carita kawaii. Textura suave y esponjosa. Puede salirte en versión glitter o mate, y el tipo y el color se entregan al azar.'
       }
     ],
     steps: [
@@ -221,8 +210,9 @@
 
   // Links antiguos de productos que se fusionaron con otro.
   D.aliases = {
-    'dumplings': 'dumplings-glitter',
-    'bao-squishy': 'dumplings-glitter',
+    'dumplings-glitter': 'dumplings',
+    'dumplings-mate': 'dumplings',
+    'bao-squishy': 'dumplings',
     'fidget-cube': 'cubo-antiestres-sensorial'
   };
 
