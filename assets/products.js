@@ -108,7 +108,7 @@
         alt: 'Cubo gel liso verde translúcido junto a su caja Cube Squeeze',
         // Fotos secundarias (galería de la página de producto)
         moreImages: [
-          { src: '/images/opt/cubo-gel-liso-6-colores.webp', alt: 'Seis cubos gel lisos en sus cajas Cube Squeeze: azul, verde agua, verde, morado, rosado y naranjo' }
+          { src: '/images/opt/cubo-gel-liso-6-colores-sf.webp', alt: 'Seis cubos gel lisos en sus cajas Cube Squeeze: azul, verde agua, verde, morado, rosado y naranjo' }
         ],
         blend: false,
         stock: 'En stock',
@@ -167,7 +167,7 @@
         // Fotos secundarias (galería de la página de producto)
         moreImages: [
           { src: '/images/opt/fidget-cube-colores.webp', alt: 'Cubos antiestrés sensoriales en blanco con fucsia, morado y rosado, junto a su caja' },
-          { src: '/images/opt/fidget-cubos-12-colores.webp', alt: 'Doce cubos antiestrés sensoriales de distintos colores dispuestos en círculo' },
+          { src: '/images/opt/fidget-cubos-12-colores-sf.webp', alt: 'Doce cubos antiestrés sensoriales de distintos colores dispuestos en círculo' },
           { src: '/images/opt/fidget-cubos-colores-2.webp', alt: 'Seis cubos antiestrés sensoriales en fila de distintos colores' }
         ],
         blend: false,
@@ -187,8 +187,8 @@
         alt: 'Dumpling squishy morado con glitter y carita kawaii, junto a su caja de bambú',
         // Fotos secundarias (galería de la página de producto)
         moreImages: [
-          { src: '/images/opt/dumplings-glitter-colores.webp', alt: 'Cinco dumplings squishy con glitter en sus cajas de bambú: dorado, vino, naranjo, rosado y turquesa' },
-          { src: '/images/opt/dumplings-mate-colores.webp', alt: 'Cuatro dumplings squishy mate en sus cajas de bambú: amarillo, celeste, rosado y blanco' }
+          { src: '/images/opt/dumplings-glitter-colores-sf.webp', alt: 'Cinco dumplings squishy con glitter en sus cajas de bambú: dorado, vino, naranjo, rosado y turquesa' },
+          { src: '/images/opt/dumplings-mate-colores-sf.webp', alt: 'Cuatro dumplings squishy mate en sus cajas de bambú: amarillo, celeste, rosado y blanco' }
         ],
         blend: false,
         stock: 'En stock',
