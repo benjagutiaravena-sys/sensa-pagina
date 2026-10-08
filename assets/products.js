@@ -8,6 +8,7 @@
 //   variants    versiones elegibles [{ id, name }] (ej. Glitter / Mate). Si no hay, no se muestra selector.
 //   colorLabel  texto informativo cuando el producto no tiene selector de color.
 //   stock       texto de disponibilidad.
+//   soldOut     true = agotado a mano (tiene prioridad sobre la hoja de stock). Quitar la línea para volver a venderlo.
 (function () {
   // Tonos de los swatches (se reutilizan entre productos).
   var C = {
@@ -116,27 +117,8 @@
         description: 'Cubo de gel súper sólido, transparente y colorido. Ideal para apretar y liberar tensión.'
       },
       {
-        slug: 'cubo-gel-forma',
-        name: 'Cubo Gel con Forma',
-        price: 3000, // mismo precio que el Cubo Gel Liso
-        category: 'gel',
-        kicker: 'Gel con forma de burbujas',
-        badge: 'Forma de burbujas',
-        badgeClass: 'bg-surface-container-highest text-on-surface',
-        image: '/images/opt/cubo-gel-forma.webp',
-        alt: 'Cubo gel rosado con forma de burbujas junto a su caja Squish Cube',
-        moreImages: [
-          { src: '/images/opt/cubo-gel-forma-colores-1.webp', alt: 'Cubos gel con forma de burbujas en sus cajas Squish Cube: rosado, naranjo, morado y azul' },
-          { src: '/images/opt/cubo-gel-forma-colores-2.webp', alt: 'Cubos gel con forma de burbujas en sus cajas Squish Cube, vista de frente' },
-          { src: '/images/opt/cubo-gel-forma-colores-3.webp', alt: 'Cubos gel con forma de burbujas en sus cajas Squish Cube, vista en ángulo' }
-        ],
-        blend: false,
-        stock: 'En stock',
-        colors: [C.rosado, C.azul, C.morado, C.naranjo],
-        description: 'Cubo de gel con forma de burbujas, para apretar y liberar tensión.'
-      },
-      {
         slug: 'cubo-gel-cinta',
+        soldOut: true, // agotado a mano: se ve "Agotado" aunque la hoja de stock no diga nada
         name: 'Cubo Gel con Cinta',
         price: 3000, // mismo precio que el Cubo Gel Liso
         category: 'gel',

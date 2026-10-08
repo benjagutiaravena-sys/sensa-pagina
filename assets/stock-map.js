@@ -10,8 +10,6 @@ window.SENSA_STOCK_MAP = {
     'cubo gel': 'cubo-gel',
     'cubos gel liso': 'cubo-gel',
     'gel liso': 'cubo-gel',
-    'cubos gel con forma': 'cubo-gel-forma',
-    'gel con forma': 'cubo-gel-forma',
     'cubos gel con cinta': 'cubo-gel-cinta',
     'gel con cinta': 'cubo-gel-cinta',
     'mantequilla': 'butter-squishy',

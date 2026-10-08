@@ -48,6 +48,7 @@
 
   // Estado de un producto (sin color) o de un color concreto.
   D.stockState = function (p, colorId) {
+    if (p.soldOut) return 'out'; // agotado a mano
     var s = D.stock.byProduct[p.slug];
     if (!s) return 'unknown';
     if (colorId) return s.colors[colorId] || 'unknown';
