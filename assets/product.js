@@ -434,7 +434,7 @@
   document.getElementById('ig-btn').addEventListener('click', function () {
     var miss = missingSection();
     if (miss) { warnMissing(miss); return; }
-    S.sendToInstagram(igMessage(), '¡Mensaje copiado! Pégalo en el chat de ' + D.handle);
+    S.sendToInstagram(igMessage(), '¡Mensaje listo! Si no aparece escrito en el chat, pégalo: ya está copiado');
   });
 
   var copyBtnText = document.getElementById('copy-link-text');

@@ -283,17 +283,19 @@
     if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
   }
 
-  // Copia el texto y abre directo el chat privado (DM) de @sensa.usm para pegarlo.
+  // Copia el texto y abre directo el chat privado (DM) de @sensa.usm con el mensaje.
   // Instagram no permite prellenar el mensaje desde un link, por eso se copia al portapapeles.
   function sendToInstagram(text, okMsg) {
     var p = copyText(text);
-    window.open(D.instagramDM || D.instagram, '_blank', 'noopener');
+    // Se intenta dejar el mensaje escrito en el chat (?text=); si Instagram lo ignora, queda copiado para pegarlo.
+    var url = D.instagramDM ? D.instagramDM + '?text=' + encodeURIComponent(text) : D.instagram;
+    window.open(url, '_blank', 'noopener');
     p.then(function () { toast(okMsg || ('¡Mensaje copiado! Pégalo en el chat de ' + D.handle)); })
      .catch(function () { toast('No se pudo copiar. Escríbenos en ' + D.handle); });
   }
   function send() {
     if (!items.length) return;
-    sendToInstagram(Cart.message(), '¡Pedido copiado! Pégalo en el chat de ' + D.handle);
+    sendToInstagram(Cart.message(), '¡Pedido listo! Si no aparece escrito en el chat, pégalo: ya está copiado');
   }
 
   function init() {
