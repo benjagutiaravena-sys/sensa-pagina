@@ -7,6 +7,7 @@
 //   randomColors colores que pueden salir cuando el color es al azar [{ id, name, hex }]; solo informativos, no se eligen.
 //   variants    versiones elegibles [{ id, name }] (ej. Glitter / Mate). Si no hay, no se muestra selector.
 //   colorLabel  texto informativo cuando el producto no tiene selector de color.
+//   cycle       (opcional) N = las primeras N fotos se alternan solas con fundido, en el catálogo y en la página del producto.
 //   stock       texto de disponibilidad.
 //   soldOut     true = agotado a mano (tiene prioridad sobre la hoja de stock). Quitar la línea para volver a venderlo.
 (function () {
@@ -124,9 +125,12 @@
         kicker: 'Gel con cinta holográfica',
         badge: 'Cinta holográfica',
         badgeClass: 'bg-surface-container-highest text-on-surface',
-        image: '/images/opt/cubo-gel-cinta.webp',
-        alt: 'Cubo gel transparente con cinta holográfica en su interior junto a su caja Squish Cube',
+        image: '/images/opt/cubo-gel-cinta-colores-sf.webp',
+        alt: 'Cubos gel con cinta holográfica en sus cajas Cube Squeeze: celeste, rosado, amarillo y morado, con uno amarillo fuera de la caja',
+        // cycle: las primeras N fotos (la principal + las siguientes) se van alternando solas con un fundido
+        cycle: 2,
         moreImages: [
+          { src: '/images/opt/cubo-gel-cinta.webp', alt: 'Cubo gel transparente con cinta holográfica en su interior junto a su caja Squish Cube' },
           { src: '/images/opt/cubo-gel-cinta-colores-1.webp', alt: 'Cubos gel con cinta holográfica en sus cajas Cube Squeeze: celeste, rosado, amarillo y morado' },
           { src: '/images/opt/cubo-gel-cinta-colores-2.webp', alt: 'Cuatro cubos gel con cinta holográfica en sus cajas Cube Squeeze' }
         ],

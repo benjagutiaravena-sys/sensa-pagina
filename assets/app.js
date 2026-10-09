@@ -361,6 +361,18 @@
     return '<span class="font-headline-sm text-headline-sm text-on-surface font-bold ' + (big ? 'mt-1' : '') + '">' + D.money(p.price) + '</span>';
   }
 
+  // Foto de la tarjeta; si el producto tiene "cycle", apila las fotos para alternarlas con fundido.
+  function cardImgs(p, sold) {
+    var base = 'tray-img' + (p.blend ? ' blend' : '') + (sold ? ' grayscale opacity-50' : '');
+    if (!(p.cycle > 1)) {
+      return '<img class="' + base + ' w-full h-full object-contain" loading="lazy" src="' + p.image + '" alt="' + esc(p.alt) + '">';
+    }
+    var list = [{ src: p.image, alt: p.alt }].concat((p.moreImages || []).slice(0, p.cycle - 1));
+    return list.map(function (g, i) {
+      return '<img class="' + base + ' cycle-img' + (i === 0 ? ' is-on' : '') + '" loading="' + (i === 0 ? 'lazy' : 'eager') + '" src="' + g.src + '" alt="' + (i === 0 ? esc(g.alt) : '') + '">';
+    }).join('');
+  }
+
   function cardHTML(p) {
     var note = D.cardNote(p);
     var sold = D.isSoldOut && D.isSoldOut(p);
@@ -369,8 +381,8 @@
         '<article class="sensory-card h-full flex flex-col justify-between p-2.5 rounded-lg bg-surface-container-lowest shadow-rest hover:shadow-raised">' +
           '<div class="flex flex-col">' +
             '<div class="relative w-full aspect-square rounded-DEFAULT bg-surface-container overflow-hidden">' +
-              '<a href="/producto/' + p.slug + '" class="absolute inset-0 flex items-center justify-center p-2" aria-label="Ver ' + esc(p.name) + '">' +
-                '<img class="tray-img' + (p.blend ? ' blend' : '') + ' w-full h-full object-contain' + (sold ? ' opacity-50 grayscale' : '') + '" loading="lazy" src="' + p.image + '" alt="' + esc(p.alt) + '">' +
+              '<a href="/producto/' + p.slug + '" class="absolute inset-0 flex items-center justify-center p-2" aria-label="Ver ' + esc(p.name) + '"' + (p.cycle > 1 ? ' data-cycle="0"' : '') + '>' +
+                cardImgs(p, sold) +
               '</a>' +
               (sold
                 ? '<span class="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-graphite text-surface font-label-sm text-label-sm font-bold shadow-sm pointer-events-none">Agotado</span>'
@@ -414,6 +426,21 @@
           '<span class="w-8 h-8 shrink-0 rounded-full bg-surface-container-high text-on-surface flex items-center justify-center group-hover:bg-primary group-hover:text-on-primary transition-colors"><span class="material-symbols-outlined text-[18px]">arrow_forward</span></span>' +
         '</div>' +
       '</a>';
+  }
+
+  // Alterna las fotos de las tarjetas con "data-cycle" (fundido). Se pausa con la pestaña oculta o "reducir movimiento".
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduceMotion) {
+    setInterval(function () {
+      if (document.hidden) return;
+      document.querySelectorAll('[data-cycle]').forEach(function (el) {
+        var imgs = el.querySelectorAll('.cycle-img');
+        if (imgs.length < 2) return;
+        var next = (Number(el.getAttribute('data-cycle')) + 1) % imgs.length;
+        imgs.forEach(function (im, i) { im.classList.toggle('is-on', i === next); });
+        el.setAttribute('data-cycle', String(next));
+      });
+    }, 3500);
   }
 
   window.Sensa = {

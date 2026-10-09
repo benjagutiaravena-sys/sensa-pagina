@@ -266,6 +266,15 @@
       var b = e.target.closest('[data-thumb]');
       if (b) show(Number(b.getAttribute('data-thumb')));
     });
+    // Si el producto tiene "cycle", las primeras fotos se alternan solas hasta que la persona toque la galería.
+    if (p.cycle > 1 && !(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+      var auto = setInterval(function () {
+        if (!document.hidden) show(current < p.cycle - 1 ? current + 1 : 0);
+      }, 3800);
+      ['img-prev', 'img-next', 'thumbs'].forEach(function (id) {
+        document.getElementById(id).addEventListener('click', function () { clearInterval(auto); });
+      });
+    }
   }
 
   function markChecked(selector, attr, value) {
