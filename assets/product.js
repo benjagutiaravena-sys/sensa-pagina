@@ -266,10 +266,13 @@
       var b = e.target.closest('[data-thumb]');
       if (b) show(Number(b.getAttribute('data-thumb')));
     });
-    // Si el producto tiene "cycle", las primeras fotos se alternan solas hasta que la persona toque la galería.
-    if (p.cycle > 1 && !(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+    // Las fotos se alternan solas con fundido hasta que la persona toque la galería (salvo las marcadas "still").
+    var loop = gallery.map(function (g, i) { return g.still ? -1 : i; }).filter(function (i) { return i !== -1; });
+    if (loop.length > 1 && !(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) {
       var auto = setInterval(function () {
-        if (!document.hidden) show(current < p.cycle - 1 ? current + 1 : 0);
+        if (document.hidden) return;
+        var at = loop.indexOf(current);
+        show(loop[(at + 1) % loop.length]);
       }, 3800);
       ['img-prev', 'img-next', 'thumbs'].forEach(function (id) {
         document.getElementById(id).addEventListener('click', function () { clearInterval(auto); });
