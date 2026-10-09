@@ -129,8 +129,7 @@
         image: '/images/opt/cubo-gel-cinta-colores-sf.webp',
         alt: 'Cubos gel con cinta holográfica en sus cajas Cube Squeeze: celeste, rosado, amarillo y morado, con uno amarillo fuera de la caja',
         moreImages: [
-          { src: '/images/opt/cubo-gel-cinta.webp', alt: 'Cubo gel transparente con cinta holográfica en su interior junto a su caja Squish Cube' },
-          { src: '/images/opt/cubo-gel-cinta-colores-2.webp', alt: 'Cuatro cubos gel con cinta holográfica en sus cajas Cube Squeeze', still: true }
+          { src: '/images/opt/cubo-gel-cinta.webp', alt: 'Cubo gel transparente con cinta holográfica en su interior junto a su caja Squish Cube' }
         ],
         blend: false,
         stock: 'En stock',
