@@ -73,6 +73,8 @@
   window.SENSA = {
     handle: '@sensa.usm',
     instagram: 'https://www.instagram.com/sensa.usm',
+    // Abre directo el chat (mensajes privados) con @sensa.usm; el perfil queda en `instagram`.
+    instagramDM: 'https://ig.me/m/sensa.usm',
     categories: [
       { id: 'squishies', label: 'Squishies' },
       { id: 'gel', label: 'Gel' },
