@@ -118,7 +118,6 @@
       },
       {
         slug: 'cubo-gel-cinta',
-        soldOut: true, // agotado a mano: se ve "Agotado" aunque la hoja de stock no diga nada
         name: 'Cubo Gel con Cinta',
         price: 3000, // mismo precio que el Cubo Gel Liso
         category: 'gel',
