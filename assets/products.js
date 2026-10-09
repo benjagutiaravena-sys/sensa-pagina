@@ -152,8 +152,7 @@
         // Fotos secundarias (galería de la página de producto)
         moreImages: [
           { src: '/images/opt/fidget-cube-colores.webp', alt: 'Cubos antiestrés sensoriales en blanco con fucsia, morado y rosado, junto a su caja' },
-          { src: '/images/opt/fidget-cubos-12-colores-sf.webp', alt: 'Doce cubos antiestrés sensoriales de distintos colores dispuestos en círculo' },
-          { src: '/images/opt/fidget-cubos-colores-2.webp', alt: 'Seis cubos antiestrés sensoriales en fila de distintos colores' }
+          { src: '/images/opt/fidget-cubos-12-colores-sf.webp', alt: 'Doce cubos antiestrés sensoriales de distintos colores dispuestos en círculo' }
         ],
         blend: false,
         stock: 'En stock',
@@ -173,7 +172,8 @@
         // Fotos secundarias (galería de la página de producto)
         moreImages: [
           { src: '/images/opt/dumplings-glitter-colores-sf.webp', alt: 'Cinco dumplings squishy con glitter en sus cajas de bambú: dorado, vino, naranjo, rosado y turquesa' },
-          { src: '/images/opt/dumplings-mate-colores-sf.webp', alt: 'Cuatro dumplings squishy mate en sus cajas de bambú: amarillo, celeste, rosado y blanco' }
+          { src: '/images/opt/dumplings-mate-colores-sf.webp', alt: 'Cuatro dumplings squishy mate en sus cajas de bambú: amarillo, celeste, rosado y blanco' },
+          { src: '/images/opt/dumplings-rosados-sf.webp', alt: 'Dumpling squishy rosado con glitter junto a un dumpling rosado mate, ambos con carita kawaii' }
         ],
         blend: false,
         stock: 'En stock',
