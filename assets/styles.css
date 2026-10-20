@@ -173,3 +173,45 @@ body.no-bottom-nav .toast { bottom: 1.5rem; }
 .squish-btn.bg-graphite:active, .squish-btn.bg-primary-container:active { box-shadow: 0 2px 6px rgba(0,0,0,0.4), inset 0 2px 3px rgba(255,255,255,0.3); }
 /* Bandeja de foto: pozo hundido */
 .photo-well { box-shadow: inset 0 2px 6px rgba(10, 8, 16, 0.45); }
+
+/* ---- Halloween: telarañas y arañas (decoración, no interactiva) ---- */
+/* Telaraña en una esquina. Anclar a un contenedor con position relative. --web = tamaño, --web-c = color del trazo */
+.web-tr::before, .web-tl::after, .web-bl::after {
+  content: ''; position: absolute; width: var(--web, 64px); height: var(--web, 64px);
+  pointer-events: none; z-index: 1; opacity: 0.55; background: no-repeat center / contain;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='none' stroke='%23cfbcff' stroke-width='1.3'%3E%3Cpath d='M100 0L0 0M100 0L0 100M100 0L100 100M100 0L30 100M100 0L70 100M100 0L0 30M100 0L0 70' stroke-width='.8' opacity='.7'/%3E%3Cpath d='M20 0Q30 30 0 20'/%3E%3Cpath d='M45 0Q55 55 0 45'/%3E%3Cpath d='M75 0Q80 80 0 75'/%3E%3Cpath d='M100 15Q90 90 15 100'/%3E%3C/svg%3E");
+}
+.web-tr::before { top: 0; right: 0; }
+.web-tl::after { top: 0; left: 0; transform: scaleX(-1); }
+.web-bl::after { bottom: 0; left: 0; transform: scale(-1, -1); }
+.web-dark::before, .web-dark::after {
+  opacity: 0.4;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='none' stroke='%232e1500' stroke-width='1.3'%3E%3Cpath d='M100 0L0 0M100 0L0 100M100 0L100 100M100 0L30 100M100 0L70 100M100 0L0 30M100 0L0 70' stroke-width='.8' opacity='.7'/%3E%3Cpath d='M20 0Q30 30 0 20'/%3E%3Cpath d='M45 0Q55 55 0 45'/%3E%3Cpath d='M75 0Q80 80 0 75'/%3E%3Cpath d='M100 15Q90 90 15 100'/%3E%3C/svg%3E");
+}
+
+/* Araña colgando de su hilo, con balanceo suave */
+.spider-hang, .sensory-card::after {
+  width: 24px; height: 64px; pointer-events: none; z-index: 12; transform-origin: 50% 0;
+  background: no-repeat center top / contain;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 64'%3E%3Cline x1='12' y1='0' x2='12' y2='40' stroke='%23cfbcff' stroke-width='1' opacity='.7'/%3E%3Cg fill='%23cfbcff'%3E%3Cellipse cx='12' cy='47' rx='6.5' ry='6'/%3E%3Ccircle cx='12' cy='39.5' r='3.5'/%3E%3C/g%3E%3Cg stroke='%23cfbcff' stroke-width='1.3' stroke-linecap='round' fill='none'%3E%3Cpath d='M6 44Q1 41 0 46M6 48Q1 49 1 54M7 51Q4 55 5 59M18 44Q23 41 24 46M18 48Q23 49 23 54M17 51Q20 55 19 59'/%3E%3C/g%3E%3Ccircle cx='10.5' cy='39' r='1' fill='%23151120'/%3E%3Ccircle cx='13.5' cy='39' r='1' fill='%23151120'/%3E%3C/svg%3E");
+  animation: dangle 4.2s ease-in-out infinite alternate;
+}
+.spider-hang { position: absolute; top: 0; }
+.spider-o, .sensory-card::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 64'%3E%3Cline x1='12' y1='0' x2='12' y2='40' stroke='%23ff9e44' stroke-width='1' opacity='.7'/%3E%3Cg fill='%23ff9e44'%3E%3Cellipse cx='12' cy='47' rx='6.5' ry='6'/%3E%3Ccircle cx='12' cy='39.5' r='3.5'/%3E%3C/g%3E%3Cg stroke='%23ff9e44' stroke-width='1.3' stroke-linecap='round' fill='none'%3E%3Cpath d='M6 44Q1 41 0 46M6 48Q1 49 1 54M7 51Q4 55 5 59M18 44Q23 41 24 46M18 48Q23 49 23 54M17 51Q20 55 19 59'/%3E%3C/g%3E%3Ccircle cx='10.5' cy='39' r='1' fill='%23151120'/%3E%3Ccircle cx='13.5' cy='39' r='1' fill='%23151120'/%3E%3C/svg%3E");
+}
+.spider-d {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 64'%3E%3Cline x1='12' y1='0' x2='12' y2='40' stroke='%232e1500' stroke-width='1' opacity='.7'/%3E%3Cg fill='%231d1928'%3E%3Cellipse cx='12' cy='47' rx='6.5' ry='6'/%3E%3Ccircle cx='12' cy='39.5' r='3.5'/%3E%3C/g%3E%3Cg stroke='%231d1928' stroke-width='1.3' stroke-linecap='round' fill='none'%3E%3Cpath d='M6 44Q1 41 0 46M6 48Q1 49 1 54M7 51Q4 55 5 59M18 44Q23 41 24 46M18 48Q23 49 23 54M17 51Q20 55 19 59'/%3E%3C/g%3E%3Ccircle cx='10.5' cy='39' r='1' fill='%23ff9e44'/%3E%3Ccircle cx='13.5' cy='39' r='1' fill='%23ff9e44'/%3E%3C/svg%3E");
+}
+.spider-delay { animation-delay: -2s; animation-duration: 5s; }
+@keyframes dangle { from { transform: rotate(-6deg); } to { transform: rotate(6deg); } }
+
+/* Tarjetas del catálogo: algunas con araña colgando del borde superior */
+.sensory-card { position: relative; }
+.sensory-card::after { content: ''; position: absolute; top: 0; left: 58%; }
+#product-grid > div:not(:nth-child(3n+2)) .sensory-card::after { display: none; }
+#product-grid > div:nth-child(3n+2) .sensory-card::after { animation-delay: -1.3s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .spider-hang, .sensory-card::after { animation: none; }
+}

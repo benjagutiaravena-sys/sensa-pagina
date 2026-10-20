@@ -190,7 +190,8 @@
 
     '<div class="mt-space-sm lg:grid lg:grid-cols-2 lg:gap-margin-lg lg:items-start">' +
       '<section aria-label="Fotos del producto" class="lg:sticky lg:top-24 flex flex-col gap-space-sm">' +
-        '<div class="relative w-full aspect-square bg-surface-container-high rounded-lg overflow-hidden photo-well flex items-center justify-center p-space-md">' +
+        '<div class="relative w-full aspect-square bg-surface-container-high rounded-lg overflow-hidden photo-well flex items-center justify-center p-space-md web-tr" style="--web:90px">' +
+          '<span class="spider-hang spider-o" style="left:9%" aria-hidden="true"></span>' +
           '<img id="main-img" src="' + p.image + '" alt="' + S.esc(p.alt) + '" class="tray-img' + (p.blend ? ' blend' : '') + ' w-full h-full object-contain rounded-xl transition-opacity duration-200">' +
           (multi ? arrowBtn('img-prev', 'left', 'arrow_back', 'Foto anterior') + arrowBtn('img-next', 'right', 'arrow_forward', 'Foto siguiente') : '') +
         '</div>' +

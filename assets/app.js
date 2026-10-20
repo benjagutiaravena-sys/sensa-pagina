@@ -162,7 +162,8 @@
       '<div class="cart-root" id="cart-root">' +
         '<div class="cart-scrim" data-cart-close></div>' +
         '<aside class="cart-panel" role="dialog" aria-modal="true" aria-labelledby="cart-title">' +
-          '<div class="px-space-md pt-space-md pb-space-sm flex items-center justify-between bg-surface-container-lowest/80">' +
+          '<div class="relative px-space-md pt-space-md pb-space-sm flex items-center justify-between bg-surface-container-lowest/80 web-tl" style="--web:70px">' +
+            '<span class="spider-hang" style="right:4.6rem;top:0" aria-hidden="true"></span>' +
             '<div class="flex items-center gap-space-xs">' +
               '<h2 id="cart-title" class="font-headline-sm text-headline-sm text-on-surface">Tu pedido</h2>' +
               '<span data-cart-count-badge class="px-2.5 py-0.5 rounded-full bg-primary-container text-on-primary-container font-label-md text-label-md font-bold">0</span>' +

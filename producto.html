@@ -22,7 +22,8 @@
 <body class="no-bottom-nav bg-surface text-on-surface font-body-md text-body-md min-h-screen">
 
 <header class="fixed top-0 inset-x-0 z-50 bg-surface/85 backdrop-blur-xl shadow-rest">
-  <div class="h-16 max-w-[1280px] mx-auto px-margin-sm lg:px-margin-lg flex items-center justify-between gap-space-sm">
+  <div class="relative h-16 max-w-[1280px] mx-auto px-margin-sm lg:px-margin-lg flex items-center justify-between gap-space-sm">
+    <span class="spider-hang right-[5.8rem] sm:right-[12rem]" style="top:calc(100% - 4px)" aria-hidden="true"></span>
     <div class="flex items-center gap-space-sm min-w-0">
       <a href="/#productos" id="back-link" aria-label="Volver al catálogo" class="squish-btn w-10 h-10 shrink-0 rounded-full bg-surface-container-high hover:bg-surface-container-highest flex items-center justify-center">
         <span class="material-symbols-outlined text-[22px]">arrow_back</span>
@@ -49,7 +50,9 @@
   </div>
 </main>
 
-<footer class="bg-surface-container-low rounded-t-lg pt-space-lg pb-space-lg">
+<footer class="relative bg-surface-container-low rounded-t-lg pt-space-lg pb-space-lg web-tr web-tl" style="--web:90px">
+  <span class="spider-hang spider-delay" style="left:22%" aria-hidden="true"></span>
+  <span class="spider-hang spider-o hidden sm:block" style="right:26%" aria-hidden="true"></span>
   <div class="max-w-[1280px] mx-auto px-margin-sm lg:px-margin-lg flex flex-col items-center text-center gap-space-sm">
     <p class="font-headline-sm text-headline-sm text-primary">Menos estrés, más momentos SENSA.</p>
     <a href="https://www.instagram.com/sensa.usm" target="_blank" rel="noopener" class="font-label-lg text-label-lg text-on-surface-variant hover:text-primary transition-colors">Instagram: @sensa.usm</a>
