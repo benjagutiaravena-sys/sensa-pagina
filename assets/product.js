@@ -56,7 +56,7 @@
   var thumbsHTML = multi ?
     '<div id="thumbs" class="flex items-center gap-3 overflow-x-auto no-scrollbar p-1" role="group" aria-label="Fotos del producto">' +
       gallery.map(function (g, i) {
-        return '<button type="button" data-thumb="' + i + '" aria-label="Ver foto ' + (i + 1) + ' de ' + gallery.length + '" class="thumb shrink-0 w-20 h-20 rounded-DEFAULT overflow-hidden bg-surface-container p-1 transition-all">' +
+        return '<button type="button" data-thumb="' + i + '" aria-label="Ver foto ' + (i + 1) + ' de ' + gallery.length + '" class="thumb shrink-0 w-20 h-20 rounded-DEFAULT overflow-hidden bg-surface-container-high p-1 transition-all">' +
           '<img src="' + g.src + '" alt="' + S.esc(g.alt) + '" loading="lazy" class="w-full h-full object-contain rounded-[12px]"></button>';
       }).join('') +
     '</div>' : '';
@@ -79,7 +79,7 @@
 
   function accordion(id, title, body, open) {
     return '' +
-      '<div class="acc rounded-lg bg-surface-container-lowest overflow-hidden shadow-[0_8px_24px_-4px_rgba(42,40,51,0.04)]' + (open ? ' acc-open' : '') + '">' +
+      '<div class="acc rounded-lg bg-surface-container-lowest overflow-hidden shadow-rest' + (open ? ' acc-open' : '') + '">' +
         '<button type="button" class="w-full px-space-md py-4 flex items-center justify-between text-left active:bg-surface-container-low transition-colors" aria-expanded="' + (open ? 'true' : 'false') + '" aria-controls="' + id + '" data-acc>' +
           '<span class="font-title-md text-title-md text-on-surface font-bold">' + title + '</span>' +
           '<span class="acc-icon material-symbols-outlined text-on-surface-variant text-[20px]">' + (open ? 'remove' : 'add') + '</span>' +
@@ -143,15 +143,15 @@
         '<span id="qty-val" aria-live="polite" class="font-headline-sm text-headline-sm text-on-surface w-6 text-center">1</span>' +
         '<button type="button" id="qty-inc" aria-label="Aumentar cantidad" class="squish-btn w-10 h-10 rounded-full bg-surface-container-lowest text-on-surface flex items-center justify-center font-bold text-title-md hover:bg-surface-dim">+</button>' +
       '</div>' +
-      '<button type="button" id="add-btn" class="squish-btn flex-1 h-14 rounded-full bg-graphite text-surface hover:bg-inverse-surface font-title-md text-title-md flex items-center justify-center gap-2 shadow-[0_8px_24px_-4px_rgba(42,40,51,0.2)]">' +
+      '<button type="button" id="add-btn" class="squish-btn flex-1 h-14 rounded-full bg-graphite text-surface hover:bg-inverse-surface font-title-md text-title-md flex items-center justify-center gap-2 shadow-squish">' +
         '<span class="material-symbols-outlined text-[22px]">add_shopping_cart</span><span>Agregar al pedido</span>' +
       '</button>' +
     '</div>' +
-    '<button type="button" id="ig-btn" class="squish-btn w-full py-3.5 rounded-full bg-surface-container-low text-on-surface hover:bg-surface-container-high flex items-center justify-center gap-2.5 font-label-lg text-label-lg font-bold shadow-[0_2px_6px_-1px_rgba(185,167,232,0.18)]">' +
-      '<span class="material-symbols-outlined text-primary text-[20px]">send</span><span>Pedir ahora por Instagram</span>' +
+    '<button type="button" id="ig-btn" class="squish-btn w-full py-3.5 rounded-full bg-secondary text-on-secondary hover:brightness-110 flex items-center justify-center gap-2.5 font-label-lg text-label-lg font-bold shadow-[0_8px_20px_-6px_rgba(185,167,232,0.4),inset_0_2px_3px_rgba(255,255,255,0.35),inset_0_-3px_5px_rgba(134,111,194,0.5)]">' +
+      '<span class="material-symbols-outlined text-on-secondary text-[20px]">send</span><span>Pedir ahora por Instagram</span>' +
     '</button>'
   :
-    '<button type="button" id="ig-btn" class="squish-btn w-full h-14 rounded-full bg-graphite text-surface hover:bg-inverse-surface font-title-md text-title-md flex items-center justify-center gap-2 shadow-[0_8px_24px_-4px_rgba(42,40,51,0.2)]">' +
+    '<button type="button" id="ig-btn" class="squish-btn w-full h-14 rounded-full bg-graphite text-surface hover:bg-inverse-surface font-title-md text-title-md flex items-center justify-center gap-2 shadow-squish">' +
       '<span class="material-symbols-outlined text-[22px]">send</span><span>Consultar precio por Instagram</span>' +
     '</button>';
 
@@ -190,7 +190,7 @@
 
     '<div class="mt-space-sm lg:grid lg:grid-cols-2 lg:gap-margin-lg lg:items-start">' +
       '<section aria-label="Fotos del producto" class="lg:sticky lg:top-24 flex flex-col gap-space-sm">' +
-        '<div class="relative w-full aspect-square bg-surface-container rounded-lg overflow-hidden shadow-rest flex items-center justify-center p-space-md">' +
+        '<div class="relative w-full aspect-square bg-surface-container-high rounded-lg overflow-hidden photo-well flex items-center justify-center p-space-md">' +
           '<img id="main-img" src="' + p.image + '" alt="' + S.esc(p.alt) + '" class="tray-img' + (p.blend ? ' blend' : '') + ' w-full h-full object-contain rounded-xl transition-opacity duration-200">' +
           (multi ? arrowBtn('img-prev', 'left', 'arrow_back', 'Foto anterior') + arrowBtn('img-next', 'right', 'arrow_forward', 'Foto siguiente') : '') +
         '</div>' +
@@ -254,7 +254,7 @@
     }, 120);
     document.querySelectorAll('[data-thumb]').forEach(function (b) {
       var on = Number(b.getAttribute('data-thumb')) === current;
-      b.classList.toggle('shadow-[0_0_0_2.5px_#2A2833]', on);
+      b.classList.toggle('shadow-[0_0_0_2.5px_#ff9e44]', on);
       b.classList.toggle('opacity-70', !on);
     });
   }

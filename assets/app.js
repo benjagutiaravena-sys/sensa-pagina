@@ -178,13 +178,13 @@
           '<div id="cart-filled" class="flex-1 min-h-0">' +
             '<div class="h-full flex flex-col">' +
               '<div id="cart-list" class="p-space-md flex flex-col gap-space-sm overflow-y-auto flex-1"></div>' +
-              '<div class="p-space-md bg-surface-container-lowest shadow-[0_-8px_24px_-4px_rgba(42,40,51,0.06)] flex flex-col gap-3 rounded-t-lg">' +
+              '<div class="p-space-md bg-surface-container-lowest shadow-[0_-10px_28px_-6px_rgba(10,8,16,0.5)] flex flex-col gap-3 rounded-t-lg">' +
                 '<div class="flex flex-col gap-1.5">' +
                   '<div class="flex items-center justify-between text-on-surface-variant font-body-sm text-body-sm"><span>Subtotal</span><span class="font-bold text-on-surface" data-cart-subtotal>$0</span></div>' +
                   '<div class="flex items-start justify-between gap-3 text-on-surface-variant font-body-sm text-[12px] leading-tight"><span>Envío</span><span class="text-right text-primary font-semibold">Se coordina por Instagram</span></div>' +
                   '<div class="flex items-center justify-between pt-1"><span class="font-headline-sm text-headline-sm text-on-surface">Total</span><span class="font-headline-sm text-headline-sm text-on-surface font-bold" data-cart-total>$0</span></div>' +
                 '</div>' +
-                '<button type="button" id="cart-send" class="squish-btn w-full py-3.5 px-4 rounded-full bg-graphite text-surface hover:bg-inverse-surface flex items-center justify-center gap-2 shadow-[0_8px_24px_-4px_rgba(42,40,51,0.18)]">' +
+                '<button type="button" id="cart-send" class="squish-btn w-full py-3.5 px-4 rounded-full bg-graphite text-surface hover:bg-inverse-surface flex items-center justify-center gap-2 shadow-squish">' +
                   '<span class="material-symbols-outlined text-[18px] text-primary-fixed">content_copy</span>' +
                   '<span class="font-label-lg text-label-lg font-bold">Copiar pedido y abrir Instagram</span>' +
                   '<span class="material-symbols-outlined text-[18px]">north_east</span>' +
@@ -209,7 +209,7 @@
               '</div>' +
               '<h3 class="font-headline-sm text-headline-sm text-on-surface mb-2">Tu pedido está vacío</h3>' +
               '<p class="font-body-sm text-body-sm text-on-surface-variant max-w-[260px] mb-space-lg leading-relaxed">Aún no has agregado productos. Explora el catálogo y elige tu favorito.</p>' +
-              '<a href="/#productos" data-cart-close class="squish-btn w-full max-w-[240px] py-3.5 px-6 rounded-full bg-graphite text-surface hover:bg-inverse-surface flex items-center justify-center gap-2 shadow-[0_8px_20px_-4px_rgba(42,40,51,0.15)]">' +
+              '<a href="/#productos" data-cart-close class="squish-btn w-full max-w-[240px] py-3.5 px-6 rounded-full bg-graphite text-surface hover:bg-inverse-surface flex items-center justify-center gap-2 shadow-squish">' +
                 '<span class="material-symbols-outlined text-[18px] text-tertiary-fixed">spa</span><span class="font-label-lg text-label-lg font-bold">Ver productos</span>' +
               '</a>' +
             '</div>' +
@@ -369,9 +369,9 @@
     var sold = D.isSoldOut && D.isSoldOut(p);
     return '' +
       '<div class="reveal-up h-full" data-category="' + p.category + '" data-price="' + p.price + '">' +
-        '<article class="sensory-card h-full flex flex-col justify-between p-2.5 rounded-lg bg-surface-container-lowest shadow-rest hover:shadow-raised">' +
+        '<article class="sensory-card h-full flex flex-col justify-between p-2.5 rounded-lg bg-surface-container-low shadow-rest hover:shadow-raised">' +
           '<div class="flex flex-col">' +
-            '<div class="relative w-full aspect-square rounded-DEFAULT bg-surface-container overflow-hidden">' +
+            '<div class="relative w-full aspect-square rounded-DEFAULT bg-surface-container-high photo-well overflow-hidden">' +
               '<a href="/producto/' + p.slug + '" class="absolute inset-0 flex items-center justify-center p-2" aria-label="Ver ' + esc(p.name) + '">' +
                 '<img class="tray-img' + (p.blend ? ' blend' : '') + ' w-full h-full object-contain' + (sold ? ' opacity-50 grayscale' : '') + '" loading="lazy" src="' + p.image + '" alt="' + esc(p.alt) + '">' +
               '</a>' +
@@ -405,8 +405,8 @@
 
   function relatedHTML(p) {
     return '' +
-      '<a class="group flex flex-col rounded-lg bg-surface-container-lowest p-space-sm shadow-rest hover:shadow-raised hover:-translate-y-1 transition-all" href="/producto/' + p.slug + '">' +
-        '<div class="aspect-square w-full rounded-DEFAULT bg-surface-container overflow-hidden mb-2 relative flex items-center justify-center p-2">' +
+      '<a class="group flex flex-col rounded-lg bg-surface-container-low p-space-sm shadow-rest hover:shadow-raised hover:-translate-y-1 transition-all" href="/producto/' + p.slug + '">' +
+        '<div class="aspect-square w-full rounded-DEFAULT bg-surface-container-high photo-well overflow-hidden mb-2 relative flex items-center justify-center p-2">' +
           '<img alt="' + esc(p.alt) + '" class="tray-img' + (p.blend ? ' blend' : '') + ' w-full h-full object-contain group-hover:scale-105' + (D.isSoldOut && D.isSoldOut(p) ? ' opacity-50 grayscale' : '') + '" loading="lazy" src="' + p.image + '">' +
           '<span class="absolute top-2 right-2 px-2 py-0.5 rounded-full bg-surface-container-lowest/80 backdrop-blur-sm font-label-sm text-label-sm font-bold text-on-surface">' + (D.isSoldOut && D.isSoldOut(p) ? 'Agotado' : esc(p.badge)) + '</span>' +
         '</div>' +

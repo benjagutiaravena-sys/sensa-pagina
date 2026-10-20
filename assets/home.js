@@ -43,9 +43,9 @@
       document.querySelectorAll('[data-cat]').forEach(function (b) {
         var on = b === btn;
         b.setAttribute('aria-pressed', on ? 'true' : 'false');
-        b.classList.toggle('bg-inverse-surface', on);
-        b.classList.toggle('text-inverse-on-surface', on);
-        b.classList.toggle('shadow-[0_4px_12px_rgba(42,40,51,0.12)]', on);
+        b.classList.toggle('bg-tertiary-container', on);
+        b.classList.toggle('text-on-tertiary-container', on);
+        b.classList.toggle('shadow-[0_0_14px_rgba(132,193,171,0.35)]', on);
         b.classList.toggle('bg-surface-container-high', !on);
         b.classList.toggle('text-on-surface-variant', !on);
       });
