@@ -311,3 +311,37 @@ body.no-bottom-nav .toast { bottom: 1.5rem; }
 .hero-sticker b { font-size: 22px; }
 @media (max-width: 640px) { .hero-art { max-width: 360px; } .hero-sticker { width: 92px; height: 92px; right: -1%; bottom: 20%; } .hero-sticker b { font-size: 18px; } }
 @media (prefers-reduced-motion: reduce) { .hero-prod { animation: none; } }
+
+/* ---- Ataúd de vampiro (Halloween) ---- */
+.hero-arch { background: none !important; box-shadow: none !important; border-radius: 0 !important; overflow: visible !important; }
+.hero-arch::before { left: 50%; top: 18%; bottom: auto; width: 96%; transform: translateX(-50%); background: radial-gradient(circle, rgba(255,158,68,.28) 0%, rgba(255,158,68,0) 66%); z-index: 0; }
+.hero-arch::after { display: none; }
+.coffin { position: absolute; left: 11%; right: 11%; top: 0; bottom: 15%; z-index: 1; filter: drop-shadow(0 26px 26px rgba(0,0,0,.65)) drop-shadow(0 0 22px rgba(185,167,232,.18)); transform: rotate(-3deg); }
+.coffin-shell, .coffin-in { position: absolute; clip-path: polygon(34% 0, 66% 0, 100% 23%, 79% 100%, 21% 100%, 0 23%); }
+.coffin-shell { inset: 0; background: repeating-linear-gradient(97deg, rgba(0,0,0,.14) 0 2px, transparent 2px 9px), linear-gradient(160deg, #8a6a52 0%, #5a4033 45%, #33241f 100%); }
+.coffin-in { inset: 4.5% 6.5% 4% 6.5%; background: repeating-linear-gradient(45deg, rgba(255,255,255,.035) 0 10px, transparent 10px 20px), repeating-linear-gradient(-45deg, rgba(255,255,255,.035) 0 10px, transparent 10px 20px), radial-gradient(ellipse at 50% 42%, #7a3466 0%, #4a1d4a 55%, #2a1230 100%); box-shadow: inset 0 0 40px rgba(0,0,0,.55); }
+.coffin-cross { position: absolute; left: 50%; top: 7%; width: 0; height: 0; }
+.coffin-cross::before, .coffin-cross::after { content: ''; position: absolute; background: #ff9e44; opacity: .75; border-radius: 2px; box-shadow: 0 0 10px rgba(255,158,68,.6); }
+.coffin-cross::before { width: 4px; height: 30px; left: -2px; top: 0; }
+.coffin-cross::after { width: 20px; height: 4px; left: -10px; top: 7px; }
+.hero-prod { top: 22%; width: 50%; height: 44%; }
+.hero-dots { bottom: 84px; }
+.bat { position: absolute; z-index: 4; width: 34px; height: auto; pointer-events: none; filter: drop-shadow(0 4px 6px rgba(0,0,0,.5)); animation: bat-fly 7s ease-in-out infinite; }
+.bat-1 { left: 0; top: 8%; }
+.bat-2 { right: 4%; top: 34%; width: 26px; animation-delay: -2.5s; animation-duration: 8s; }
+.bat-3 { left: 14%; bottom: 24%; width: 22px; animation-delay: -4.5s; animation-duration: 6s; }
+@keyframes bat-fly { 0%, 100% { transform: translate(0, 0) scaleY(1); } 25% { transform: translate(16px, -14px) scaleY(.7); } 50% { transform: translate(34px, 2px) scaleY(1); } 75% { transform: translate(14px, 12px) scaleY(.75); } }
+@media (max-width: 640px) { .coffin { left: 8%; right: 8%; } .bat { width: 26px; } .bat-2, .bat-3 { width: 20px; } }
+
+/* ---- Cinta en movimiento (franja de abajo de la portada) ---- */
+.marq { overflow: hidden; background: #1d1928; border-block: 1px solid rgba(253,248,242,.06); box-shadow: inset 0 2px 6px rgba(10,8,16,.4); -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
+.marq-track { display: flex; width: max-content; animation: marq-run 38s linear infinite; }
+.marq:hover .marq-track { animation-play-state: paused; }
+.marq-set { display: flex; flex-shrink: 0; }
+.marq-it { display: flex; align-items: center; gap: 12px; padding: 18px 34px; white-space: nowrap; color: #e7dff4; }
+.marq-it .material-symbols-outlined { color: #ff9e44; font-size: 28px; }
+.marq-it b { display: block; font-size: 14px; line-height: 1.2; }
+.marq-it small { display: block; font-size: 12px; color: #dac2b1; }
+.marq-it::after { content: ''; width: 5px; height: 5px; border-radius: 50%; background: rgba(185,167,232,.45); margin-left: 34px; }
+@keyframes marq-run { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) { .marq-track { animation: none; } .marq { overflow-x: auto; } .bat { animation: none; } }
