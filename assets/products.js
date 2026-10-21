@@ -101,6 +101,28 @@
         highlights: ['Suave al tacto', 'Efecto slow rising', 'Fácil de llevar', 'Perfecto para tus pausas SENSA']
       },
       {
+        slug: 'butter-espuma',
+        name: 'Butter Squishy de Espuma',
+        price: 4500,
+        category: 'squishies',
+        kicker: 'Squishy de espuma',
+        badge: 'Espuma',
+        badgeClass: 'bg-tertiary-fixed text-on-tertiary-fixed',
+        image: '/images/opt/butter-espuma.webp',
+        alt: 'Tres Butter Squishy de espuma en forma de barra de mantequilla: menta, amarillo y rosado',
+        moreImages: [
+          { src: '/images/opt/butter-espuma-2.webp', alt: 'Butter Squishy de espuma en menta, amarillo y rosado, vistos en ángulo' }
+        ],
+        blend: false,
+        stock: 'En stock',
+        colors: [
+          { id: 'menta', name: 'Menta', hex: '#5FD7B8' },
+          { id: 'amarillo', name: 'Amarillo', hex: '#FFC700' },
+          { id: 'rosado', name: 'Rosado', hex: '#F4A6D0' }
+        ],
+        description: 'Butter squishy de espuma: suave, blandito y muy satisfactorio de apretar. Disponible en tres colores.'
+      },
+      {
         // Cubo gel liso (caja "Cube Squeeze"). Se mantiene el slug original para no romper links ya compartidos.
         slug: 'cubo-gel',
         name: 'Cubo Gel Liso',
@@ -137,6 +159,31 @@
         stock: 'En stock',
         colors: [C.rosadoClaroTransp, C.morado, C.celeste, C.amarillo],
         description: 'Cubo de gel transparente con cinta holográfica en su interior, para apretar y liberar tensión.'
+      },
+      {
+        slug: 'cubo-gel-glitter',
+        name: 'Cubo Gel con Glitter',
+        price: 3000, // mismo precio que el Cubo Gel Liso
+        category: 'gel',
+        kicker: 'Gel con glitter · Cube Squeeze Ball',
+        badge: 'Con glitter',
+        badgeClass: 'bg-surface-container-highest text-on-surface',
+        image: '/images/opt/cubo-gel-glitter.webp',
+        alt: 'Cubo gel rosado con glitter junto a su caja Cube Squeeze Ball',
+        moreImages: [
+          { src: '/images/opt/cubo-gel-glitter-2.webp', alt: 'Cubos gel con glitter en sus cajas Cube Squeeze Ball: turquesa, morado, rosado claro, naranjo y rosado, con un cubo rosado al frente' },
+          { src: '/images/opt/cubo-gel-glitter-3.webp', alt: 'Cinco cubos gel con glitter en sus cajas Cube Squeeze Ball: rosado, rosado claro, turquesa, naranjo y morado' }
+        ],
+        blend: false,
+        stock: 'En stock',
+        colors: [
+          { id: 'rosado', name: 'Rosado', hex: '#EE3E9A' },
+          { id: 'rosado-claro', name: 'Rosado claro', hex: '#F6C1D0' },
+          { id: 'turquesa', name: 'Turquesa', hex: '#4CC9C0' },
+          { id: 'naranjo', name: 'Naranjo', hex: '#F5A04A' },
+          { id: 'morado', name: 'Morado', hex: '#B79AE0' }
+        ],
+        description: 'Cubo de gel súper sólido con glitter en su interior, para apretar y liberar tensión.'
       },
       {
         slug: 'cubo-antiestres-sensorial',
