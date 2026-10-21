@@ -171,7 +171,7 @@
         image: '/images/opt/cubo-gel-glitter-estudio.webp',
         alt: 'Cubo gel rosado con glitter junto a su caja Cube Squeeze Ball',
         moreImages: [
-          { src: '/images/opt/cubo-gel-glitter-2.webp', alt: 'Cubos gel con glitter en sus cajas Cube Squeeze Ball: turquesa, morado, rosado claro, naranjo y rosado, con un cubo rosado al frente' },
+          { src: '/images/opt/cubo-gel-glitter-grupo.webp', alt: 'Cubos gel con glitter en sus cajas Cube Squeeze Ball: morado, naranjo, turquesa, rosado claro, blanco y rosado, con un cubo rosado al frente' },
           { src: '/images/opt/cubo-gel-glitter-3.webp', alt: 'Cinco cubos gel con glitter en sus cajas Cube Squeeze Ball: rosado, rosado claro, turquesa, naranjo y morado' }
         ],
         blend: false,
@@ -181,7 +181,8 @@
           { id: 'rosado-claro', name: 'Rosado claro', hex: '#F6C1D0' },
           { id: 'turquesa', name: 'Turquesa', hex: '#4CC9C0' },
           { id: 'naranjo', name: 'Naranjo', hex: '#F5A04A' },
-          { id: 'morado', name: 'Morado', hex: '#B79AE0' }
+          { id: 'morado', name: 'Morado', hex: '#B79AE0' },
+          { id: 'blanco', name: 'Blanco', hex: '#F2F2F2' }
         ],
         description: 'Cubo de gel súper sólido con glitter en su interior, para apretar y liberar tensión.'
       },
