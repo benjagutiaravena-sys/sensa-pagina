@@ -89,7 +89,7 @@
         kicker: 'Squishies slow rising',
         badge: 'Slow rising',
         badgeClass: 'bg-primary-fixed text-on-primary-fixed',
-        image: '/images/opt/butter.webp',
+        image: '/images/opt/butter-estudio.webp',
         alt: 'Butter Squishy, squishy con forma de barra de mantequilla',
         blend: false,
         stock: 'En stock',
@@ -168,7 +168,7 @@
         kicker: 'Gel con glitter · Cube Squeeze Ball',
         badge: 'Con glitter',
         badgeClass: 'bg-surface-container-highest text-on-surface',
-        image: '/images/opt/cubo-gel-glitter.webp',
+        image: '/images/opt/cubo-gel-glitter-estudio.webp',
         alt: 'Cubo gel rosado con glitter junto a su caja Cube Squeeze Ball',
         moreImages: [
           { src: '/images/opt/cubo-gel-glitter-2.webp', alt: 'Cubos gel con glitter en sus cajas Cube Squeeze Ball: turquesa, morado, rosado claro, naranjo y rosado, con un cubo rosado al frente' },
