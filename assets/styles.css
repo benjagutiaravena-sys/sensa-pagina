@@ -215,3 +215,69 @@ body.no-bottom-nav .toast { bottom: 1.5rem; }
 @media (prefers-reduced-motion: reduce) {
   .spider-hang, .sensory-card::after { animation: none; }
 }
+
+/* ---- Mejoras de contenido (modelo SENSA) ---- */
+.eyebrow { display: inline-flex; align-items: center; gap: 10px; font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--c-pumpkin); }
+.eyebrow::before { content: ''; width: 24px; height: 2px; background: currentColor; border-radius: 2px; }
+.eyebrow.justify-center { justify-content: center; }
+.eyebrow.justify-center::after { content: ''; width: 24px; height: 2px; background: currentColor; border-radius: 2px; }
+
+/* etiquetas de precio y sello de la portada */
+.hero-tag { position: absolute; z-index: 40; align-items: center; gap: 10px; padding: 7px 14px 7px 7px; border-radius: 18px; background: #2c2837; box-shadow: 0 10px 24px -8px rgba(0,0,0,.6), inset 0 1px 2px rgba(253,248,242,.12); font-size: 12px; line-height: 1.25; color: var(--c-cream); white-space: nowrap; transition: transform .25s var(--ease-squish); }
+.hero-tag:hover { transform: translateY(-3px); }
+.hero-tag img { width: 38px; height: 38px; object-fit: contain; background: #373242; border-radius: 12px; padding: 3px; }
+.hero-tag b { display: block; font-size: 13px; color: #ffc597; }
+.hero-sticker { position: absolute; z-index: 45; right: -1%; bottom: -3%; width: 104px; height: 104px; border-radius: 50%; background: #ff9e44; color: #2e1500; display: grid; place-items: center; text-align: center; line-height: 1.05; transform: rotate(-10deg); box-shadow: 0 12px 24px -8px rgba(255,158,68,.5), inset 0 3px 3px rgba(255,255,255,.35), inset 0 -4px 6px rgba(175,78,10,.45); animation: sticker-wob 5s ease-in-out infinite; pointer-events: none; }
+.hero-sticker small { display: block; font-size: 9px; letter-spacing: .1em; text-transform: uppercase; font-weight: 700; }
+.hero-sticker b { display: block; font-size: 21px; font-weight: 700; }
+@keyframes sticker-wob { 0%, 100% { transform: rotate(-10deg); } 50% { transform: rotate(-4deg) scale(1.04); } }
+
+/* tarjetas "¿Qué buscas hoy?" */
+.need-card { position: relative; text-align: left; min-height: 150px; padding: 18px 16px; border-radius: 2rem; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden; box-shadow: 0 8px 24px -4px rgba(10,8,16,.45), inset 0 2px 2px rgba(253,248,242,.1), inset 0 -3px 4px rgba(10,8,16,.3); transition: transform .25s var(--ease-squish), box-shadow .25s; }
+.need-card:hover { transform: translateY(-5px); }
+.need-card.on { box-shadow: 0 0 0 3px var(--c-pumpkin), 0 8px 24px -4px rgba(10,8,16,.45); }
+.need-card h3 { font-size: 17px; line-height: 1.2; margin-top: 14px; }
+.need-card p { font-size: 12px; line-height: 1.4; opacity: .85; margin-top: 4px; }
+.need-card::after { content: 'arrow_outward'; font-family: 'Material Symbols Outlined'; position: absolute; top: 14px; right: 14px; font-size: 20px; opacity: .55; }
+@media (max-width: 640px) { .need-card p { display: none; } .need-card { min-height: 130px; } }
+
+/* catálogo: tarjeta completa clicable y botón "Ver producto" */
+.stretch::after { content: ''; position: absolute; inset: 0; z-index: 1; border-radius: 2rem; }
+.sensory-card .fav-btn { z-index: 3; }
+.sensory-card [data-add], .sensory-card [data-sw] { position: relative; z-index: 3; }
+.view-pill { position: absolute; left: 50%; bottom: 10px; transform: translate(-50%, 10px); opacity: 0; display: inline-flex; align-items: center; gap: 4px; background: #ff9e44; color: #2e1500; padding: 6px 14px; border-radius: 9999px; font-size: 12px; font-weight: 700; white-space: nowrap; pointer-events: none; transition: all .3s var(--ease-squish); z-index: 2; box-shadow: 0 8px 18px -6px rgba(255,158,68,.6); }
+.sensory-card:hover .view-pill, .sensory-card:focus-within .view-pill { opacity: 1; transform: translate(-50%, 0); }
+@media (hover: none) { .view-pill { display: none; } }
+
+/* arma tu pack */
+.pick-chip { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px 6px 6px; border-radius: 9999px; background: #2c2837; color: #e7dff4; font-size: 13px; font-weight: 700; box-shadow: inset 0 1px 2px rgba(253,248,242,.1); transition: all .2s; }
+.pick-chip img { width: 30px; height: 30px; object-fit: contain; background: #373242; border-radius: 50%; padding: 2px; }
+.pick-chip:hover { background: #373242; }
+.pick-chip.on { background: #ff9e44; color: #2e1500; box-shadow: 0 8px 18px -8px rgba(255,158,68,.6); }
+.pick-chip.on img { background: #fff3e6; }
+.pack-slot { aspect-ratio: 1; border-radius: 1.25rem; border: 2px dashed rgba(185,167,232,.35); display: grid; place-items: center; color: rgba(185,167,232,.5); background: #1d1928; padding: 6px; }
+.pack-slot.on { border: 2px solid #ff9e44; background: #2c2837; animation: pack-pop .35s var(--ease-squish); }
+.pack-slot img { max-height: 100%; object-fit: contain; }
+@keyframes pack-pop { from { transform: scale(.7); } to { transform: scale(1); } }
+
+/* guía táctil */
+.opt { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 9999px; background: #2c2837; color: #e7dff4; font-size: 13px; font-weight: 700; box-shadow: inset 0 1px 2px rgba(253,248,242,.1); transition: all .2s; }
+.opt:hover { background: #373242; }
+.opt.on { background: #84c1ab; color: #0d503f; box-shadow: 0 0 14px rgba(132,193,171,.35); }
+.reco-img { width: 60%; max-height: 180px; object-fit: contain; filter: drop-shadow(0 14px 14px rgba(0,0,0,.5)); animation: pack-pop .4s var(--ease-squish); }
+
+/* preguntas frecuentes */
+.faq-item { border-radius: 1.5rem; background: #1d1928; box-shadow: 0 8px 24px -4px rgba(10,8,16,.45), inset 0 2px 2px rgba(253,248,242,.08); overflow: hidden; }
+.faq-q { width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 18px 22px; text-align: left; font-weight: 700; font-size: 15px; color: #e7dff4; }
+.faq-q .material-symbols-outlined { color: #ff9e44; transition: transform .3s var(--ease-squish); }
+.faq-item.on .faq-q .material-symbols-outlined { transform: rotate(45deg); }
+.faq-a { display: none; padding: 0 22px 18px; color: #dac2b1; font-size: 14px; line-height: 1.65; }
+.faq-item.on .faq-a { display: block; }
+
+/* tira de Instagram y botón flotante */
+.ig-tile { aspect-ratio: 1; border-radius: 1.5rem; background: #2c2837; display: grid; place-items: center; padding: 10px; box-shadow: inset 0 2px 4px rgba(10,8,16,.35); transition: transform .25s var(--ease-squish); }
+.ig-tile:hover { transform: translateY(-5px) rotate(-2deg); }
+.ig-tile img { max-height: 100%; object-fit: contain; filter: drop-shadow(0 8px 8px rgba(0,0,0,.45)); }
+.fab-ig { background: linear-gradient(135deg, #f7b04a, #e8527f 55%, #8e5eb3); box-shadow: 0 14px 28px -10px rgba(232,82,127,.8); }
+.fab-ig:hover { transform: scale(1.08) rotate(-6deg); }
+@media (prefers-reduced-motion: reduce) { .hero-sticker { animation: none; } }

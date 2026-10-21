@@ -4,11 +4,62 @@
   var grid = document.getElementById('product-grid');
   if (!grid) return;
 
-  var state = { category: 'all', sort: 'default', list: false };
+  var state = { category: 'all', sort: 'default', list: false, need: null, query: '' };
+
+  /* ---------- Intenciones, packs y guía (editable) ---------- */
+  var TAGS = {
+    'butter-squishy': ['estudio', 'llevar'],
+    'butter-espuma': ['estudio', 'regalar'],
+    'cubo-gel': ['estres', 'estudio'],
+    'cubo-gel-cinta': ['estres', 'regalar'],
+    'cubo-gel-glitter': ['regalar', 'estres'],
+    'cubo-antiestres-sensorial': ['estudio', 'llevar'],
+    'dumplings': ['regalar', 'estres', 'llevar']
+  };
+  var NEEDS = [
+    { id: 'estudio', ico: 'menu_book', t: 'Para estudiar', d: 'Manos ocupadas, mente enfocada.', cls: 'bg-secondary-container text-secondary' },
+    { id: 'estres', ico: 'self_improvement', t: 'Para soltar el estrés', d: 'Apretar, rebotar y respirar.', cls: 'bg-tertiary-container/30 text-tertiary' },
+    { id: 'llevar', ico: 'backpack', t: 'Para llevar', d: 'Chicos y listos para la mochila.', cls: 'bg-primary-container/25 text-primary' },
+    { id: 'regalar', ico: 'redeem', t: 'Para regalar', d: 'Un detalle diferente y entretenido.', cls: 'bg-secondary-fixed-dim/20 text-secondary-fixed' }
+  ];
+  var RECO = { // [cuándo][sensación] -> producto
+    estudio: { blando: 'butter-squishy', gel: 'cubo-gel', mecanico: 'cubo-antiestres-sensorial' },
+    descanso: { blando: 'butter-espuma', gel: 'cubo-gel-cinta', mecanico: 'cubo-antiestres-sensorial' },
+    regalo: { blando: 'dumplings', gel: 'cubo-gel-glitter', mecanico: 'cubo-antiestres-sensorial' }
+  };
+  var WHY = {
+    'butter-squishy': 'Blandito, con efecto slow rising: perfecto para apretar mientras estudias.',
+    'butter-espuma': 'De espuma y en tres colores: suavidad total para tus descansos.',
+    'cubo-gel': 'Gel súper sólido y transparente para liberar tensión en tu escritorio.',
+    'cubo-gel-cinta': 'Gel con cinta holográfica: relajante y muy lindo para mirar.',
+    'cubo-gel-glitter': 'Gel con glitter en seis colores: un regalo que luce y se siente increíble.',
+    'cubo-antiestres-sensorial': 'Seis lados con botones, palanca y clics para mantener las manos ocupadas.',
+    'dumplings': 'Kawaii, esponjoso y sorpresa de color: ideal para regalar.'
+  };
+  var S = window.Sensa;
+  var esc = S.esc;
+  function openCart() { var b = document.querySelector('[data-cart-open]'); if (b) b.click(); }
+  // Primer color que no esté agotado (para agregar rápido un producto con colores)
+  function firstColor(p) {
+    if (!D.hasColors(p)) return null;
+    var ok = p.colors.filter(function (c) { return !(D.stockState && D.stockState(p, c.id) === 'out'); });
+    return ok.length ? ok[0].id : null;
+  }
+  function quickAdd(slug) {
+    var p = D.find(slug);
+    if (!p || p.price == null || (D.isSoldOut && D.isSoldOut(p))) return false;
+    var opts = D.hasColors(p) ? { color: firstColor(p) } : {};
+    if (D.hasColors(p) && !opts.color) return false;
+    return S.Cart.add(slug, 1, opts);
+  }
 
   /* ---------- Catálogo ---------- */
   function visibleProducts() {
-    var list = D.products.filter(function (p) { return state.category === 'all' || p.category === state.category; });
+    var list = D.products.filter(function (p) {
+      return (state.category === 'all' || p.category === state.category) &&
+        (!state.need || (TAGS[p.slug] || []).indexOf(state.need) !== -1) &&
+        (!state.query || (p.name + ' ' + p.kicker).toLowerCase().indexOf(state.query) !== -1);
+    });
     // Los productos sin precio ("Consultar precio") quedan siempre al final.
     var priced = function (p) { return p.price == null ? Infinity : p.price; };
     var byAsc = function (a, b) {
@@ -30,6 +81,11 @@
       (state.list ? 'grid-cols-1 sm:grid-cols-2' : 'grid-cols-2 lg:grid-cols-4');
     var n = list.length;
     document.getElementById('count-pill').textContent = n + (n === 1 ? ' producto' : ' productos');
+    var an = document.getElementById('active-need');
+    an.classList.toggle('hidden', !state.need); an.classList.toggle('inline-flex', !!state.need);
+    if (state.need) document.getElementById('active-need-txt').textContent = NEEDS.filter(function (x) { return x.id === state.need; })[0].t;
+    var nb = document.getElementById('needs');
+    if (nb) Array.prototype.forEach.call(nb.querySelectorAll('[data-need]'), function (b) { b.classList.toggle('on', b.getAttribute('data-need') === state.need); });
     document.getElementById('empty-note').classList.toggle('hidden', n !== 0);
     window.Sensa.applyFavs(grid);
   }
@@ -145,6 +201,85 @@
       }, 2500 + i * 1750);
     });
   })();
+
+  /* ---------- ¿Qué buscas hoy? ---------- */
+  var needsEl = document.getElementById('needs');
+  needsEl.innerHTML = NEEDS.map(function (n) {
+    return '<button type="button" data-need="' + n.id + '" class="need-card reveal-up ' + n.cls + '"><span class="material-symbols-outlined text-[32px]">' + n.ico + '</span><div><h3 class="font-headline-sm">' + n.t + '</h3><p>' + n.d + '</p></div></button>';
+  }).join('');
+  needsEl.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-need]'); if (!b) return;
+    state.need = state.need === b.getAttribute('data-need') ? null : b.getAttribute('data-need');
+    state.category = 'all';
+    document.querySelectorAll('[data-cat]').forEach(function (x) { if (x.getAttribute('data-cat') === 'all') x.click(); });
+    renderGrid();
+    if (state.need) document.getElementById('productos').scrollIntoView({ behavior: 'smooth' });
+  });
+  document.getElementById('clear-need').addEventListener('click', function () { state.need = null; renderGrid(); });
+  document.getElementById('search').addEventListener('input', function (e) { state.query = e.target.value.trim().toLowerCase(); renderGrid(); });
+
+  /* ---------- Arma tu pack ---------- */
+  var pack = [];
+  function renderPack() {
+    var avail = D.products.filter(function (p) { return p.price != null; });
+    document.getElementById('pick').innerHTML = avail.map(function (p) {
+      var sold = D.isSoldOut && D.isSoldOut(p), on = pack.indexOf(p.slug) !== -1;
+      return '<button type="button" data-p="' + p.slug + '" class="pick-chip squish-btn' + (on ? ' on' : '') + '"' + (sold ? ' disabled style="opacity:.45;cursor:not-allowed"' : '') + '><img src="' + p.image + '" alt="">' + esc(p.name) + (sold ? ' · Agotado' : '') + '</button>';
+    }).join('');
+    var slots = '';
+    for (var i = 0; i < 4; i++) {
+      var p = pack[i] && D.find(pack[i]);
+      slots += p ? '<div class="pack-slot on"><img src="' + p.image + '" alt="' + esc(p.name) + '"></div>' : '<div class="pack-slot"><span class="material-symbols-outlined">add</span></div>';
+    }
+    document.getElementById('slots').innerHTML = slots;
+    var t = pack.reduce(function (sum, sl) { return sum + D.find(sl).price; }, 0);
+    document.getElementById('pack-total').textContent = D.money(t);
+    document.getElementById('pack-count').textContent = pack.length + ' de 4 elegidos';
+    document.getElementById('pack-add').disabled = !pack.length;
+  }
+  document.getElementById('pick').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-p]'); if (!b || b.disabled) return;
+    var i = pack.indexOf(b.getAttribute('data-p'));
+    if (i !== -1) pack.splice(i, 1);
+    else if (pack.length < 4) pack.push(b.getAttribute('data-p'));
+    else S.toast('Tu pack ya tiene 4 productos');
+    renderPack();
+  });
+  document.getElementById('pack-add').addEventListener('click', function () {
+    var added = 0;
+    pack.forEach(function (sl) { if (quickAdd(sl)) added++; });
+    if (added) { S.toast('Pack agregado al pedido'); pack = []; renderPack(); openCart(); }
+    else S.toast('No se pudo agregar: revisa el stock');
+  });
+  document.addEventListener('sensa:stock', renderPack);
+  renderPack();
+
+  /* ---------- Guía táctil ---------- */
+  var ans = {};
+  Array.prototype.forEach.call(document.querySelectorAll('[data-q]'), function (g) {
+    g.addEventListener('click', function (e) {
+      var o = e.target.closest('.opt'); if (!o) return;
+      Array.prototype.forEach.call(g.querySelectorAll('.opt'), function (x) { x.classList.toggle('on', x === o); });
+      ans[g.getAttribute('data-q')] = o.getAttribute('data-v');
+      if (!ans.when || !ans.feel) return;
+      var p = D.find(RECO[ans.when][ans.feel]); if (!p) return;
+      document.getElementById('reco').innerHTML = '<img class="reco-img" src="' + p.image + '" alt="' + esc(p.name) + '"><h3 class="mt-3 font-headline-sm text-headline-sm text-on-surface">' + esc(p.name) + '</h3><p class="mt-1 mb-4 font-body-md text-body-md text-on-surface-variant max-w-xs">' + esc(WHY[p.slug] || p.description) + '</p>' +
+        '<div class="flex flex-wrap justify-center gap-2"><a href="/producto/' + p.slug + '" class="squish-btn px-5 py-2.5 rounded-full bg-surface-container-high text-on-surface font-label-md text-label-md">Ver producto</a>' +
+        '<button type="button" id="reco-add" class="squish-btn px-5 py-2.5 rounded-full bg-graphite text-surface font-label-md text-label-md shadow-squish inline-flex items-center gap-1.5"><span class="material-symbols-outlined text-[18px]">add_shopping_cart</span>Agregar · ' + D.money(p.price) + '</button></div>';
+      document.getElementById('reco-add').addEventListener('click', function () {
+        if (quickAdd(p.slug)) S.toast('¡Agregado al pedido con calma!'); else S.toast('Elige el color en la página del producto');
+      });
+    });
+  });
+
+  /* ---------- Preguntas frecuentes e Instagram ---------- */
+  document.getElementById('faq-list').addEventListener('click', function (e) {
+    var b = e.target.closest('.faq-q'); if (b) b.parentNode.classList.toggle('on');
+  });
+  var igPics = ['butter-estudio', 'cubo-gel-cinta-colores-sf', 'dumplings-glitter-colores-sf', 'fidget-cubos-12-colores-sf', 'butter-espuma-estudio', 'cubo-gel-glitter-cajas'];
+  document.getElementById('ig-strip').innerHTML = igPics.map(function (n) {
+    return '<a href="https://www.instagram.com/sensa.usm" target="_blank" rel="noopener" aria-label="Ver en Instagram" class="ig-tile"><img src="/images/opt/' + n + '.webp" alt="" loading="lazy"></a>';
+  }).join('');
 
   /* ---------- Mascota Dumpling (easter egg) ----------
      Rueda desde el Hero hasta el título del catálogo mientras se baja y se queda posada ahí.

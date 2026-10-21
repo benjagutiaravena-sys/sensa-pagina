@@ -382,10 +382,11 @@
               '<button type="button" data-fav="' + p.slug + '" aria-pressed="false" aria-label="Guardar ' + esc(p.name) + ' en favoritos" class="fav-btn squish-btn absolute top-2 right-2 w-7 h-7 rounded-full bg-surface/90 backdrop-blur-sm flex items-center justify-center text-on-surface-variant hover:text-error shadow-sm">' +
                 '<span class="material-symbols-outlined text-[16px]">favorite</span>' +
               '</button>' +
+              '<span class="view-pill">Ver producto<span class="material-symbols-outlined text-[16px]">arrow_forward</span></span>' +
             '</div>' +
             '<div class="flex flex-col mt-2.5 px-0.5">' +
               '<span class="font-label-sm text-label-sm text-on-surface-variant line-clamp-1">' + esc(p.kicker) + '</span>' +
-              '<h3 class="mt-0.5"><a href="/producto/' + p.slug + '" class="font-title-md text-title-md text-on-surface tracking-tight line-clamp-2">' + esc(p.name) + '</a></h3>' +
+              '<h3 class="mt-0.5"><a href="/producto/' + p.slug + '" class="stretch font-title-md text-title-md text-on-surface tracking-tight line-clamp-2">' + esc(p.name) + '</a></h3>' +
               priceHTML(p, true) +
             '</div>' +
           '</div>' +
