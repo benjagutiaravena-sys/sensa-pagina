@@ -84,8 +84,7 @@
     var an = document.getElementById('active-need');
     an.classList.toggle('hidden', !state.need); an.classList.toggle('inline-flex', !!state.need);
     if (state.need) document.getElementById('active-need-txt').textContent = NEEDS.filter(function (x) { return x.id === state.need; })[0].t;
-    var nb = document.getElementById('needs');
-    if (nb) Array.prototype.forEach.call(nb.querySelectorAll('[data-need]'), function (b) { b.classList.toggle('on', b.getAttribute('data-need') === state.need); });
+
     document.getElementById('empty-note').classList.toggle('hidden', n !== 0);
     window.Sensa.applyFavs(grid);
   }
@@ -194,16 +193,42 @@
 
   /* ---------- ¿Qué buscas hoy? ---------- */
   var needsEl = document.getElementById('needs');
+  var LIQUID = { estudio: '#b9a7e8', estres: '#84c1ab', llevar: '#ff9e44', regalar: '#f06ea8' };
   needsEl.innerHTML = NEEDS.map(function (n) {
-    return '<button type="button" data-need="' + n.id + '" class="need-card reveal-up ' + n.cls + '"><span class="material-symbols-outlined text-[32px]">' + n.ico + '</span><div><h3 class="font-headline-sm">' + n.t + '</h3><p>' + n.d + '</p></div></button>';
+    return '<button type="button" data-need="' + n.id + '" aria-pressed="false" class="orb orb-' + n.id + '"><span class="material-symbols-outlined">' + n.ico + '</span><b>' + n.t + '</b></button>';
   }).join('');
-  needsEl.addEventListener('click', function (e) {
-    var b = e.target.closest('[data-need]'); if (!b) return;
-    state.need = state.need === b.getAttribute('data-need') ? null : b.getAttribute('data-need');
-    state.category = 'all';
-    document.querySelectorAll('[data-cat]').forEach(function (x) { if (x.getAttribute('data-cat') === 'all') x.click(); });
-    renderGrid();
-    if (state.need) document.getElementById('productos').scrollIntoView({ behavior: 'smooth' });
+  var pot = document.getElementById('brew-pot'), out = document.getElementById('brew-out'), brewTimer = null, brewing = null;
+  function brew(id) {
+    var n = NEEDS.filter(function (x) { return x.id === id; })[0];
+    brewing = id;
+    Array.prototype.forEach.call(needsEl.children, function (b) { var on = b.getAttribute('data-need') === id; b.classList.toggle('on', on); b.setAttribute('aria-pressed', on ? 'true' : 'false'); });
+    pot.style.setProperty('--liquid', LIQUID[id]);
+    pot.classList.add('is-brewing');
+    out.innerHTML = '<p class="brew-hint"><span class="material-symbols-outlined">auto_fix_high</span>Preparando tu pausa…</p>';
+    clearTimeout(brewTimer);
+    brewTimer = setTimeout(function () {
+      pot.classList.remove('is-brewing');
+      var list = D.products.filter(function (p) { return p.price != null && (TAGS[p.slug] || []).indexOf(id) !== -1; }).slice(0, 4);
+      out.innerHTML = '<p class="brew-title"><b>' + n.t + '</b><span>' + n.d + '</span></p>' +
+        '<div class="brew-list">' + list.map(function (p, i) {
+          var sold = D.isSoldOut && D.isSoldOut(p);
+          return '<div class="brew-row" style="animation-delay:' + (i * 90) + 'ms"><a href="/producto/' + p.slug + '" class="brew-img"><img src="' + p.image + '" alt=""></a>' +
+            '<a href="/producto/' + p.slug + '" class="brew-name"><b>' + esc(p.name) + '</b><small>' + (sold ? 'Agotado' : D.priceText(p)) + '</small></a>' +
+            (sold ? '' : '<button type="button" data-brew-add="' + p.slug + '" class="brew-add" aria-label="Agregar ' + esc(p.name) + ' al pedido"><span class="material-symbols-outlined">add</span></button>') + '</div>';
+        }).join('') + '</div>' +
+        '<button type="button" id="brew-cat" class="brew-cta">Ver los ' + list.length + ' en el catálogo<span class="material-symbols-outlined">arrow_forward</span></button>';
+    }, 1100);
+  }
+  needsEl.addEventListener('click', function (e) { var b = e.target.closest('[data-need]'); if (b) brew(b.getAttribute('data-need')); });
+  out.addEventListener('click', function (e) {
+    var a = e.target.closest('[data-brew-add]');
+    if (a) { if (quickAdd(a.getAttribute('data-brew-add'))) S.toast('¡Agregado al pedido con calma!'); else S.toast('Elige el color en la página del producto'); return; }
+    if (e.target.closest('#brew-cat')) {
+      state.need = brewing; state.category = 'all';
+      Array.prototype.forEach.call(document.querySelectorAll('[data-cat]'), function (x) { if (x.getAttribute('data-cat') === 'all') x.click(); });
+      renderGrid();
+      document.getElementById('productos').scrollIntoView({ behavior: 'smooth' });
+    }
   });
   document.getElementById('clear-need').addEventListener('click', function () { state.need = null; renderGrid(); });
   document.getElementById('search').addEventListener('input', function (e) { state.query = e.target.value.trim().toLowerCase(); renderGrid(); });

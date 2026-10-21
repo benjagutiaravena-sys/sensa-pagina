@@ -121,14 +121,54 @@
     </div>
   </div>
 
-  <!-- ¿QUÉ BUSCAS HOY? -->
+  <!-- ¿QUÉ BUSCAS HOY? · el caldero de pausas -->
   <section id="necesidades" class="reveal-trigger max-w-[1280px] mx-auto px-margin-sm lg:px-margin-lg pt-space-md pb-space-sm" aria-labelledby="needs-title">
-    <div class="reveal-up">
-      <span class="eyebrow">Empieza por aquí</span>
-      <h2 id="needs-title" class="mt-2 font-headline-lg-mobile text-headline-lg-mobile lg:font-headline-lg lg:text-headline-lg text-on-surface tracking-tight">¿Qué buscas <span class="text-primary">hoy</span>?</h2>
-      <p class="mt-2 font-body-md text-body-md text-on-surface-variant">Elige una intención y te mostramos los productos que mejor calzan.</p>
+    <div class="reveal-up brew-wrap relative overflow-hidden rounded-lg lg:rounded-xl bg-surface-container-low shadow-raised p-space-md sm:p-margin lg:p-margin-lg web-tl" style="--web:100px">
+      <div class="glow-drop glow-lilac -bottom-16 -left-10 w-56 h-56" aria-hidden="true"></div>
+      <div class="relative grid lg:grid-cols-[1fr_1.05fr] gap-space-lg lg:gap-12 items-center">
+        <div class="flex flex-col gap-space-sm">
+          <span class="eyebrow">Tu caldero de pausas</span>
+          <h2 id="needs-title" class="font-headline-lg-mobile text-headline-lg-mobile lg:font-headline-lg lg:text-headline-lg text-on-surface tracking-tight">¿Qué buscas <span class="text-primary">hoy</span>?</h2>
+          <p class="font-body-md text-body-md text-on-surface-variant max-w-md">Toca un ingrediente y el caldero te prepara la pausa ideal, con los productos justo aquí.</p>
+          <div id="needs" class="orbs" role="group" aria-label="Ingredientes"></div>
+        </div>
+        <div class="brew">
+          <div class="brew-pot" id="brew-pot" style="--liquid:#b9a7e8">
+            <svg class="caldron" viewBox="0 0 280 280" role="img" aria-label="Caldero con cara de calabaza, burbujeando">
+          <defs>
+            <radialGradient id="cg-body" cx="35%" cy="30%" r="85%"><stop offset="0" stop-color="#4f4660"/><stop offset=".55" stop-color="#272134"/><stop offset="1" stop-color="#120e1b"/></radialGradient>
+            <radialGradient id="cg-fire" cx="50%" cy="80%" r="70%"><stop offset="0" stop-color="#ffd9a8"/><stop offset=".5" stop-color="#ff9e44"/><stop offset="1" stop-color="#d4501a"/></radialGradient>
+            <filter id="cg-blur" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="7"/></filter>
+          </defs>
+          <g class="steam"><path d="M96 70 C84 52 108 44 96 26" /><path d="M140 66 C126 46 154 36 140 14" /><path d="M184 70 C172 52 196 44 184 26" /></g>
+          <g class="flames">
+            <path class="fl fl1" d="M82 262 C70 244 84 234 80 220 C98 232 106 246 98 262 Z" fill="url(#cg-fire)"/>
+            <path class="fl fl2" d="M126 266 C108 246 130 232 124 212 C150 228 160 248 150 266 Z" fill="url(#cg-fire)"/>
+            <path class="fl fl3" d="M174 262 C164 246 176 236 172 222 C192 234 200 248 192 262 Z" fill="url(#cg-fire)"/>
+          </g>
+          <path d="M70 226 L54 258 L76 258 L88 232 Z" fill="#120e1b"/>
+          <path d="M210 226 L226 258 L204 258 L192 232 Z" fill="#120e1b"/>
+          <path d="M26 98 C10 182 58 236 140 236 C222 236 270 182 254 98 Z" fill="url(#cg-body)"/>
+          <path d="M44 114 C38 156 54 196 88 214" stroke="rgba(255,255,255,.14)" stroke-width="5" fill="none" stroke-linecap="round"/>
+          <g class="face">
+            <path d="M92 156 L108 130 L124 156 Z" /><path d="M156 156 L172 130 L188 156 Z" />
+            <path d="M88 184 L192 184 L184 206 L168 196 L154 210 L140 196 L126 210 L112 196 L96 206 Z" />
+          </g>
+          <path d="M24 104 C-4 104 -4 148 24 150" stroke="#3a3347" stroke-width="9" fill="none" stroke-linecap="round"/>
+          <path d="M256 104 C284 104 284 148 256 150" stroke="#3a3347" stroke-width="9" fill="none" stroke-linecap="round"/>
+          <ellipse cx="140" cy="98" rx="118" ry="25" fill="#3a3347"/>
+          <ellipse cx="140" cy="98" rx="107" ry="19" fill="#17121f"/>
+          <ellipse class="liq-glow" cx="140" cy="99" rx="92" ry="14" filter="url(#cg-blur)"/>
+          <ellipse class="liq" cx="140" cy="99" rx="100" ry="15"/>
+          <g class="bubbles"><circle class="bub b1" cx="96" cy="97" r="6"/><circle class="bub b2" cx="132" cy="101" r="8"/><circle class="bub b3" cx="170" cy="96" r="5"/><circle class="bub b4" cx="196" cy="100" r="7"/><circle class="bub b5" cx="114" cy="95" r="4"/></g>
+        </svg>
+          </div>
+          <div id="brew-out" class="brew-out" aria-live="polite">
+            <p class="brew-hint"><span class="material-symbols-outlined">touch_app</span>Elige un ingrediente para empezar a preparar.</p>
+          </div>
+        </div>
+      </div>
     </div>
-    <div id="needs" class="stagger-group grid grid-cols-2 lg:grid-cols-4 gap-3 mt-space-md"></div>
   </section>
 
   <!-- PRODUCTOS -->
