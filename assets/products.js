@@ -108,10 +108,10 @@
         kicker: 'Squishy de espuma',
         badge: 'Espuma',
         badgeClass: 'bg-tertiary-fixed text-on-tertiary-fixed',
-        image: '/images/opt/butter-espuma.webp',
+        image: '/images/opt/butter-espuma-estudio.webp',
         alt: 'Tres Butter Squishy de espuma en forma de barra de mantequilla: menta, amarillo y rosado',
         moreImages: [
-          { src: '/images/opt/butter-espuma-2.webp', alt: 'Butter Squishy de espuma en menta, amarillo y rosado, vistos en ángulo' }
+          { src: '/images/opt/butter-espuma-estudio-2.webp', alt: 'Butter Squishy de espuma en menta, amarillo y rosado, vistos en ángulo' }
         ],
         blend: false,
         stock: 'En stock',
