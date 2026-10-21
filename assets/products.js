@@ -172,7 +172,7 @@
         alt: 'Cubo gel rosado con glitter junto a su caja Cube Squeeze Ball',
         moreImages: [
           { src: '/images/opt/cubo-gel-glitter-grupo.webp', alt: 'Cubos gel con glitter en sus cajas Cube Squeeze Ball: morado, naranjo, turquesa, rosado claro, blanco y rosado, con un cubo rosado al frente' },
-          { src: '/images/opt/cubo-gel-glitter-3.webp', alt: 'Cinco cubos gel con glitter en sus cajas Cube Squeeze Ball: rosado, rosado claro, turquesa, naranjo y morado' }
+          { src: '/images/opt/cubo-gel-glitter-cajas.webp', alt: 'Cinco cubos gel con glitter en sus cajas Cube Squeeze Ball: rosado, rosado claro, turquesa, naranjo y morado' }
         ],
         blend: false,
         stock: 'En stock',
