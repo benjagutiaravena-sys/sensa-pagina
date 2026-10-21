@@ -111,7 +111,8 @@
         image: '/images/opt/butter-espuma-estudio.webp',
         alt: 'Tres Butter Squishy de espuma en forma de barra de mantequilla: menta, amarillo y rosado',
         moreImages: [
-          { src: '/images/opt/butter-espuma-estudio-2.webp', alt: 'Butter Squishy de espuma en menta, amarillo y rosado, vistos en ángulo' }
+          { src: '/images/opt/butter-espuma-estudio-2.webp', alt: 'Butter Squishy de espuma en menta, amarillo y rosado, vistos en ángulo' },
+          { src: '/images/opt/butter-espuma-fucsia.webp', alt: 'Butter Squishy de espuma rosado, visto de frente' }
         ],
         blend: false,
         stock: 'En stock',
