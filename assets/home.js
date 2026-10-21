@@ -191,7 +191,7 @@
     });
   })();
 
-  /* ---------- ¿Qué buscas hoy? ---------- */
+  /* ---------- Caldero de pausas ---------- */
   var needsEl = document.getElementById('needs');
   var LIQUID = { estudio: '#b9a7e8', estres: '#84c1ab', llevar: '#ff9e44', regalar: '#f06ea8' };
   needsEl.innerHTML = NEEDS.map(function (n) {
