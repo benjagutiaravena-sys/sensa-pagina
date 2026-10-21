@@ -153,52 +153,42 @@
   }
   setActive('inicio');
 
-  /* ---------- Portada: rotación de productos ----------
-     Las 4 tarjetas van cambiando de producto (desvanecen y reaparecen), escalonadas, sin repetir
-     un producto que ya se ve. Con "reducir movimiento" se queda la selección inicial. */
-  (function heroRotation() {
-    var tiles = Array.prototype.slice.call(document.querySelectorAll('[data-hero-tile]'));
-    if (!tiles.length || D.products.length <= tiles.length) return;
-    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-    var shown = tiles.map(function (a) { return a.getAttribute('href').replace('/producto/', ''); });
-    var order = D.products.map(function (p) { return p.slug; });
-    // Precarga para que el cambio no parpadee.
-    D.products.forEach(function (p) { var im = new Image(); im.src = p.image; });
-
-    function nextFor(i) {
-      // El siguiente producto de la lista que no esté visible en otra tarjeta.
-      var idx = order.indexOf(shown[i]);
-      for (var k = 1; k <= order.length; k++) {
-        var slug = order[(idx + k) % order.length];
-        if (shown.indexOf(slug) === -1) return D.find(slug);
-      }
-      return null;
-    }
-
-    function swap(i) {
-      if (document.hidden) return;
-      var a = tiles[i], p = nextFor(i);
-      if (!p) return;
-      a.classList.add('is-swapping');
+  /* ---------- Portada: producto protagonista que rota ----------
+     Un solo producto grande dentro del arco; cambia con fundido cada ~4 s y se puede elegir con los puntos. */
+  (function heroArch() {
+    var img = document.getElementById('hero-img');
+    if (!img) return;
+    var link = document.getElementById('hero-link'), nameEl = document.getElementById('hero-name'), priceEl = document.getElementById('hero-price'), dotsEl = document.getElementById('hero-dots');
+    var order = ['butter-espuma', 'cubo-gel-glitter', 'dumplings', 'cubo-gel', 'cubo-gel-cinta', 'cubo-antiestres-sensorial', 'butter-squishy'];
+    var list = order.map(function (slug) { return D.find(slug); }).filter(Boolean);
+    D.products.forEach(function (p) { if (p.price != null && list.indexOf(p) === -1) list.push(p); });
+    list.forEach(function (p) { var pre = new Image(); pre.src = p.image; }); // precarga: sin parpadeo
+    var cur = 0, timer = null;
+    dotsEl.innerHTML = list.map(function (p, k) { return '<button type="button" class="hero-dot' + (k === 0 ? ' on' : '') + '" data-k="' + k + '" aria-label="Ver ' + p.name + '"></button>'; }).join('');
+    function show(k) {
+      if (k === cur) return;
+      var p = list[k]; cur = k;
+      img.classList.add('is-out');
       setTimeout(function () {
-        var img = a.querySelector('img');
-        img.src = p.image;
-        img.alt = p.name;
-        a.href = '/producto/' + p.slug;
-        a.setAttribute('aria-label', 'Ver ' + p.name);
-        shown[i] = p.slug;
-        // Breve pausa para que el producto nuevo cargue (ya oculto) antes de reaparecer.
-        setTimeout(function () { a.classList.remove('is-swapping'); }, 120);
-      }, 800);
+        img.src = p.image; img.alt = p.name;
+        link.href = '/producto/' + p.slug; nameEl.textContent = p.name; priceEl.textContent = D.priceText(p);
+        Array.prototype.forEach.call(dotsEl.children, function (d, i) { d.classList.toggle('on', i === cur); });
+        img.classList.remove('is-out');
+      }, 380);
     }
-
-    // Cada tarjeta cambia cada ~7 s, desfasada de las demás.
-    tiles.forEach(function (a, i) {
-      setTimeout(function () {
-        swap(i);
-        setInterval(function () { swap(i); }, 7000);
-      }, 2500 + i * 1750);
+    function start() {
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      clearInterval(timer);
+      timer = setInterval(function () { if (!document.hidden) show((cur + 1) % list.length); }, 4200);
+    }
+    dotsEl.addEventListener('click', function (e) { var b = e.target.closest('[data-k]'); if (b) { show(+b.getAttribute('data-k')); start(); } });
+    start();
+    // etiquetas de precio: llevan al catálogo de esa categoría
+    Array.prototype.forEach.call(document.querySelectorAll('[data-hero-cat]'), function (a) {
+      a.addEventListener('click', function () {
+        var c = a.getAttribute('data-hero-cat');
+        Array.prototype.forEach.call(document.querySelectorAll('[data-cat]'), function (b) { if (b.getAttribute('data-cat') === c) b.click(); });
+      });
     });
   })();
 
