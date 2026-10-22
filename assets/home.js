@@ -14,7 +14,8 @@
     'cubo-gel-cinta': ['estres', 'regalar'],
     'cubo-gel-glitter': ['regalar', 'estres'],
     'cubo-antiestres-sensorial': ['estudio', 'llevar'],
-    'dumplings': ['regalar', 'estres', 'llevar']
+    'dumplings': ['regalar', 'estres', 'llevar'],
+    'queso-vaselina': ['estres', 'regalar']
   };
   var NEEDS = [
     { id: 'estudio', ico: 'menu_book', t: 'Para estudiar', d: 'Manos ocupadas, mente enfocada.', cls: 'bg-secondary-container text-secondary' },
