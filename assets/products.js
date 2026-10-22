@@ -238,7 +238,7 @@
         kicker: 'Squishy relleno de vaselina',
         badge: 'Nuevo',
         badgeClass: 'bg-primary-fixed text-on-primary-fixed',
-        image: '/images/opt/queso-vaselina.webp',
+        image: '/images/opt/queso-vaselina-sf.webp',
         alt: 'Squishy con forma de cubo de queso con agujeros, junto a su caja transparente',
         blend: false,
         stock: 'En stock',
