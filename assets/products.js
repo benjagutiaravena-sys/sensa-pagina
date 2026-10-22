@@ -229,6 +229,25 @@
         randomColors: tag(DUMPLING_COLORS.glitter, 'Glitter').concat(tag(DUMPLING_COLORS.mate, 'Mate')),
         colorLabel: 'Tipo y color al azar',
         description: 'Adorable dumpling squishy con carita kawaii. Textura suave y esponjosa. Puede salirte en versión glitter o mate, y el tipo y el color se entregan al azar.'
+      },
+      {
+        slug: 'queso-vaselina',
+        name: 'Queso de Vaselina',
+        price: 5500,
+        category: 'squishies',
+        kicker: 'Squishy relleno de vaselina',
+        badge: 'Nuevo',
+        badgeClass: 'bg-primary-fixed text-on-primary-fixed',
+        image: '/images/opt/queso-vaselina.webp',
+        alt: 'Squishy con forma de cubo de queso con agujeros, junto a su caja transparente',
+        blend: false,
+        stock: 'En stock',
+        colors: [],
+        colorLabel: 'Color único',
+        colorNote: 'Color único.',
+        dots: ['#F7E7A6'],
+        description: 'Divertido cubo de queso con agujeros, relleno de vaselina. Estíralo y aplástalo: recupera su forma original.',
+        highlights: ['Relleno de vaselina', 'Textura suave y elástica', 'Recupera su forma', 'Perfecto para tus pausas SENSA']
       }
     ],
     steps: [

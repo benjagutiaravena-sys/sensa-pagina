@@ -23,7 +23,10 @@ window.SENSA_STOCK_MAP = {
     'fidget cube': 'cubo-antiestres-sensorial',
     'cubo antiestres': 'cubo-antiestres-sensorial',
     'dumpling glitter': 'dumplings',
-    'dumpling mate': 'dumplings'
+    'dumpling mate': 'dumplings',
+    'queso': 'queso-vaselina',
+    'queso squishy': 'queso-vaselina',
+    'queso vaselina': 'queso-vaselina'
   },
   // por producto: nombre del color en la hoja  →  id del color en products.js
   colors: {
